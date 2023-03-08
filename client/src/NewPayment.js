@@ -16,7 +16,6 @@ function NewPayment(){
           },
         },
       };
-       
 
 
     return(
@@ -33,7 +32,6 @@ function NewPayment(){
                 //     })
                 // :null}
             </select> */}
-
             <select className="" name="" id="">
                 <option value="Name">Peter B.</option>
             </select>
@@ -42,18 +40,43 @@ function NewPayment(){
                 <input type="time"/>
             </div>
             <div className="container two-col">
-            <IntlCurrencyInput currency="BRL" config={currencyConfig}/>
-            <IntlCurrencyInput currency="BRL" config={currencyConfig}/>
+                <IntlCurrencyInput currency="BRL" config={currencyConfig}/>
+                <IntlCurrencyInput currency="BRL" config={currencyConfig}/>
             </div>
-            <input type="number" data-type={"currency"}/>
-            <input type="checkbox"/>
-            <input type="checkbox"/>
-            <input type="checkbox"/>
-            <input type="checkbox"/>
-            <input type="checkbox"/>
-            <input type="checkbox"/>
-            <input type="checkbox"/>
-            <input type="checkbox"/>
+            <div className="container four-col">
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+                <label className="checkbox-with-emoji">
+                    <input type="checkbox"/>
+                    <span className="checkmark">🌮</span>
+                </label>
+            </div>
         </form>
         <button>Create</button>
         </>
