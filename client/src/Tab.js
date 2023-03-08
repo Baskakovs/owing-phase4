@@ -16,9 +16,9 @@ function Tab(){
     }
 
     return(
-        <div className={left ? "container two-col" : null}>
+        <div className={left ? "container heigh-100 justify-content-center two-col" : null}>
             <TabsList handleTransitionLeft={handleTransitionLeft} left={left}/>
-            <TabsInfo onClose={handleClose}/>
+            <TabsInfo onClose={handleClose} left={left}/>
         </div>
 
     )
