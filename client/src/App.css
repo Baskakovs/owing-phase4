@@ -44,7 +44,7 @@
 
 .form{
   margin: auto; 
-  width:366px;
+  width: 366px;
   vertical-align: center;
 }
 
@@ -56,11 +56,22 @@ input{
   border-radius: 6px;
 }
 
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-wrapper label {
+  text-align: center;
+  font-size: 12px;
+}
+
 select{
   width: 101%;
   height: 25px;
   margin-top: 7px;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
   border: 2px solid #D9D9D9;
   border-radius: 6px;
 }
@@ -87,7 +98,7 @@ select{
   width: 1em;
   height: 1em;
   margin-bottom: 0.5em;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 50%;
   padding: 7px;
   line-height: 1;
@@ -97,6 +108,7 @@ select{
 
 .checkbox-with-emoji input[type="checkbox"]:checked ~ .checkmark {
   background-color: #D9D9D9;
+  border: 1.5px solid #282c34;
   color: #fff;
 }
 
@@ -110,12 +122,16 @@ select{
 
 .btn-purple{
   cursor: pointer; /* Pointer/hand icon */
-  width: 102%;
+  width: 100%;
   padding: 7px;
   background-color: #7774FF;
   color: #FFFFFF;
   border: none;
   border-radius: 6px;
+}
+
+.w-366{
+  width: 366px;
 }
 
 .btn-white-form{  
@@ -135,6 +151,15 @@ select{
   background-repeat: no-repeat;
   background-size: 30px;
   cursor: pointer;
+}
+
+.btn-split{
+  border: none;
+  background-color: #fff;
+  color: #7774FF;
+  text-decoration: underline;
+  cursor: pointer;
+  height: 23px
 }
 
 img{
@@ -157,9 +182,11 @@ img{
   cursor: pointer;
   text-decoration: underline;
 }
+
+/*Grid*/
 .container{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: max-content;
 }
 
 .justify-content-end{
@@ -198,10 +225,11 @@ img{
   align-content: center;
 }
 
-/*Grid*/
-
 .two-col{
   grid-template-columns: 1fr 1fr;
+}
+
+.col-gap-7{
   column-gap: 7px;
 }
 
@@ -211,6 +239,10 @@ img{
 
 .four-col{
   grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.grid-row-none{
+  grid-row: 2px;
 }
 
 /*Margins & Paddings*/
@@ -226,9 +258,18 @@ img{
   margin-left: 10px;
 }
 
+.mb-7{
+  margin-bottom: 7px;
+}
+
+.mt-7{
+  margin-top: 7px;
+}
+
 .p-3{
   padding: 3px;
 }
+
 
 /*widths*/
 
@@ -287,8 +328,10 @@ img{
 
 .payment-title{
 border: none;
-font-size: larger;
+font-size: 26px;
 font-weight: bold;
+width: 100%;
+margin-bottom: 12px;
 }
 
 .payment-title:focus{
