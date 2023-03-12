@@ -7,6 +7,7 @@ function Tab(){
 
     const [left, setLeft] = useState(false)
     const [tabList, setTabList] = useState([])
+    const [selectedTab, setSelectedTab] = useState("")
 
     useEffect(() => {
         fetch("/tabs")
@@ -18,8 +19,14 @@ function Tab(){
 
     }, [])
 
-    function handleTransitionLeft(){
+
+    function handleTransitionLeft(id){
         setLeft(!left)
+        tabList.filter((tab)=>{
+            if(tab.id == id){
+                setSelectedTab(tab)
+            }
+        })
     }
 
     function handleClose(){
@@ -29,7 +36,8 @@ function Tab(){
     return(
         <div className={left ? "container heigh-100 justify-content-center two-col" : null}>
             <TabsList handleTransitionLeft={handleTransitionLeft} left={left} tabList={tabList}/>
-            <TabsInfo onClose={handleClose} left={left}/>
+            <TabsInfo onClose={handleClose} left={left} selectedTab=
+            {selectedTab}/>
         </div>
 
     )

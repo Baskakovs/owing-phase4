@@ -18,7 +18,7 @@ useEffect(() => {
     });
 }, []);
 
-if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
+// if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
 
   return (
     <>
