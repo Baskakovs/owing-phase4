@@ -3,12 +3,12 @@ import LoginForm from './LoginForm'
 import duck from './duck.webp'
 import React, {useState} from 'react'
 
-function Login(){
+function Login({setCurrentUser}){
     const [login, setLogin] = useState(true)
     return(
         <div className="container two-col height-100 align-content-center">
             <div className="m-a">
-                {login? <LoginForm/> : <SignupForm/>}
+                {login? <LoginForm setCurrentUser={setCurrentUser}/> : <SignupForm/>}
                 <div className="cntr">
                     <button onClick={()=>setLogin(!login)} className="login-btn">{login ? "Signup" : 
                     "Login"}</button>

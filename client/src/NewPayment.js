@@ -89,26 +89,7 @@ function NewPayment(){
                                 <IntlCurrencyInput id="amountInput" currency="BRL" 
                                 config={currencyConfig}/>
                             </div>
-                            <div class="input-wrapper">
-                                <label for="amountInput">Peter</label>
-                                <IntlCurrencyInput id="amountInput" currency="BRL" 
-                                config={currencyConfig}/>
-                            </div>
-                            <div class="input-wrapper">
-                                <label for="amountInput">Peter</label>
-                                <IntlCurrencyInput id="amountInput" currency="BRL" 
-                                config={currencyConfig}/>
-                            </div>
-                            <div class="input-wrapper">
-                                <label for="amountInput">Peter</label>
-                                <IntlCurrencyInput id="amountInput" currency="BRL" 
-                                config={currencyConfig}/>
-                            </div>
-                            <div class="input-wrapper">
-                                <label for="amountInput">Peter</label>
-                                <IntlCurrencyInput id="amountInput" currency="BRL" 
-                                config={currencyConfig}/>
-                            </div>
+
                     </div>
                 </div>
                 <button className="btn-purple m-a mt-7">Create</button>
