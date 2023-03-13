@@ -1,10 +1,12 @@
 import React, {useState} from "react"
+import { NavLink, useHistory } from "react-router-dom"
 
 function TabsInfoCard({selectedTab}){
 
-    const {id, category, description, created_at,user} = selectedTab
+    const history = useHistory()
+
+    const {id, category, description, created_at, user} = selectedTab
     const {name} = user
-    console.log("hello",selectedTab)
 
         //FORMATING DATA AND TIME
         const date = new Date(created_at);
@@ -22,9 +24,12 @@ function TabsInfoCard({selectedTab}){
         const [emojiCategory, setEmojiCategory] = useState(emojis[category])
 
 
+    function handleClick(){
+        history.push(`/payment/${id}`)
+    }
 
     return(
-        <div className="container three-col tab-info-card align-content-center">
+        <div className="container three-col tab-info-card align-content-center" onClick={handleClick}>
             <div><h3 className="text-start">{name}</h3></div>
             <div><h3 className="text-center"><span>{emojiCategory}</span>  {description}</h3></div>
             <div className="justify-content-end"><h3 className="text-center">{formattedDate}</h3><h3 className="text-center">{time}</h3></div>
