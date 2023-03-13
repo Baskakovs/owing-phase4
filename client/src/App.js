@@ -53,7 +53,7 @@ function handleClose(){
   setLeft(false)
 }
 
-
+console.log(tabList)
 // if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
 
   return (

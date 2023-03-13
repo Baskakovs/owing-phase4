@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_13_141456) do
+ActiveRecord::Schema.define(version: 2023_03_13_195334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "debts", force: :cascade do |t|
+    t.integer "payment_id"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.decimal "amount", precision: 10, scale: 2
+  end
 
   create_table "joinuts", force: :cascade do |t|
     t.integer "user_id"
@@ -27,11 +35,6 @@ ActiveRecord::Schema.define(version: 2023_03_13_141456) do
     t.string "category"
     t.integer "tab_id"
     t.integer "user_id"
-    t.integer "paid_for_1"
-    t.integer "paid_for_2"
-    t.integer "paid_for_3"
-    t.integer "paid_for_5"
-    t.integer "paid_for_6"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "amount", precision: 10, scale: 2
