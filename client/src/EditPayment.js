@@ -18,27 +18,28 @@ function EditPayment({selectedTab}){
         },
       };
 
-
     //FILTEREING OUT THE RIGHT PAYMENT FROM THE SELECTED TAB DATA
 
     const params = useParams()
-
     const [form, setForm] = useState("")
 
     useEffect(() => {
         selectedTab.payments.filter((payment)=>{
             if(payment.id == params.id){
+                const date = new Date(payment.created_at);
+                // format time
+                
                 setForm({
                     id: payment.id,
                     user_id: payment.user_id,
-                    created_at: payment.created_at,
+                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    date: new Date(payment.created_at).toISOString().substr(0, 10),
                     amount: payment.amount,
                     description: payment.description
                 })
             }
         })},
     [])
-
 
     //HANDLING THE FORM INPUTS
 
@@ -49,7 +50,12 @@ function EditPayment({selectedTab}){
         })
     }
 
-    console.log(form)
+    //EMOJIS
+
+    const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
+
+
+
     return(
         <>
         <form className={"form"}>
@@ -71,46 +77,46 @@ function EditPayment({selectedTab}){
                             <option value="Name">Peter B.</option>
                         </select>
                         <div className="container two-col col-gap-7">
-                            <input type="date"/>
-                            <input type="time"/>
+                        <input type="date" name="date" value={form.date} onChange={handleChange} placeholder="Select a date" />
+                        <input type="time" name={"time"} value={form.time} onChange={handleChange}/>
                         </div>
                         <div className="container two-col col-gap-7">
-                            <IntlCurrencyInput currency="BRL" config={currencyConfig}/>
+                            <IntlCurrencyInput currency="BRL" config={currencyConfig} name={"amount"} value={form.amount} onChange={handleChange}/>
                             <IntlCurrencyInput currency="BRL" config={currencyConfig}/>
                         </div>
                         <div className="container four-col">
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
-                            <label className="checkbox-with-emoji">
-                                <input type="checkbox"/>
-                                <span className="checkmark">🌮</span>
-                            </label>
+                            {
+                                Object.values(EMOJIS).map((emoji) => 
+                                    {
+                                        let value;
+                                        Object.keys(EMOJIS).find((key) => {
+                                            if (EMOJIS[key] === emoji) {
+                                            value = key;
+                                    }
+                                });
+                                return (
+                                <label className="checkbox-with-emoji" key=
+                                {emoji}>
+                                {form.category == value ?
+                                <input
+                                type="checkbox"
+                                name="category"
+                                value={value}
+                                onChange={handleChange}
+                                checked
+                                /> :
+                                <input
+                                type="checkbox"
+                                name="category"
+                                value={value}
+                                onChange={handleChange}
+                                />
+                                }
+                                <span className="checkmark">{emoji}</span>
+                                </label>
+                                );
+                                })
+                            }
                         </div>
                     </div>
                     <div className="container">
