@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
 
 function EditPayment({selectedTab}){
-    
+
     const currencyConfig = {
         locale: "pt-BR",
         formats: {
@@ -22,25 +22,43 @@ function EditPayment({selectedTab}){
 
     const params = useParams()
     const [form, setForm] = useState("")
+    const [selectedUser, setSelectedUser] = useState([])
+    const [allUsers, setAllUsers] = useState([])
 
     useEffect(() => {
         selectedTab.payments.filter((payment)=>{
             if(payment.id == params.id){
                 const date = new Date(payment.created_at);
-                // format time
-                
                 setForm({
                     id: payment.id,
                     user_id: payment.user_id,
-                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                    date: new Date(payment.created_at).toISOString().substr(0, 10),
+                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: 
+                    '2-digit' }),
+                    date: date.toISOString().substr(0, 10),
                     amount: payment.amount,
                     description: payment.description
                 })
+                console.log("the one" ,payment.user)
+                setAllUsers(payment.users)
+                setSelectedUser(payment.user)
             }
         })},
-    [])
+    [selectedTab])
 
+    //SETTING THE PAYER
+
+    function changePayer(e){
+        let newAllUserList = allUsers.filter((user) => user.id != 
+        e.target.value)
+        let newSelectedUser = allUsers.find((user) => user.id == 
+        e.target.value)
+        setAllUsers([...newAllUserList, selectedUser])
+        setSelectedUser(newSelectedUser)
+        handleChange(e)
+    }
+
+    
+    console.log("selected", selectedUser)
     //HANDLING THE FORM INPUTS
 
     function handleChange(e){
@@ -55,34 +73,43 @@ function EditPayment({selectedTab}){
     const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
 
 
-
     return(
         <>
         <form className={"form"}>
-        <input type="text" name={"description"} className={"payment-title"} onChange={handleChange} value={form.description}/>
+        <input type="text" name={"description"} className={"payment-title"} 
+        onChange={handleChange} value={form.description}/>
             <div className="container justify-content-center">
                 <div className="container two-col col-gap-7">
                     <div>
-                    {/* <select name='user_id' value={data.user_id} onChange=
-                        // {onChange}>
-                        // {Array.isArray(users) ? users.map((user)=>{
-                        //     return (
-                        //         <option key={uuidv4()} value={user.id}>
-                        //             {`${user.first_name} .${user.last_name[0]}`}
-                        //         </option>)
-                        //     })
-                        // :null}
-                    </select> */}
-                        <select className="" name="" id="">
-                            <option value="Name">Peter B.</option>
-                        </select>
+                    <select value={form.user_id} name={"user_id"} onChange=
+                    {changePayer}>
+                        { selectedUser != null ?
+                            <option value={selectedUser.id}>{selectedUser.name}
+                            </option>
+                            :
+                            null
+                        }
+                        {Array.isArray(allUsers) ? allUsers.map((user) => {
+                            return (
+                                <option value={user.id} key={user.id}>
+                                    {`${user.name}`}
+                                </option>
+                            )
+                            })
+                        : null}
+                    </select>
                         <div className="container two-col col-gap-7">
-                        <input type="date" name="date" value={form.date} onChange={handleChange} placeholder="Select a date" />
-                        <input type="time" name={"time"} value={form.time} onChange={handleChange}/>
+                        <input type="date" name="date" value={form.date} 
+                        onChange={handleChange} placeholder="Select a date" />
+                        <input type="time" name={"time"} value={form.time} 
+                        onChange={handleChange}/>
                         </div>
                         <div className="container two-col col-gap-7">
-                            <IntlCurrencyInput currency="BRL" config={currencyConfig} name={"amount"} value={form.amount} onChange={handleChange}/>
-                            <IntlCurrencyInput currency="BRL" config={currencyConfig}/>
+                            <IntlCurrencyInput currency="BRL" config={
+                                currencyConfig} name={"amount"} value=
+                                {form.amount} onChange={handleChange}/>
+                            <IntlCurrencyInput currency="BRL" config=
+                            {currencyConfig}/>
                         </div>
                         <div className="container four-col">
                             {
@@ -120,10 +147,12 @@ function EditPayment({selectedTab}){
                         </div>
                     </div>
                     <div className="container">
-                            <button className="btn-split mb-7">Split Equally</button>
+                            <button className="btn-split mb-7">Split 
+                            Equally</button>
                             <div class="input-wrapper">
                                 <label for="amountInput">Peter</label>
-                                <IntlCurrencyInput id="amountInput" currency="BRL" 
+                                <IntlCurrencyInput id="amountInput" 
+                                currency="BRL" 
                                 config={currencyConfig}/>
                             </div>
 
