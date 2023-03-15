@@ -24,6 +24,8 @@ function EditPayment({selectedTab}){
     const [form, setForm] = useState("")
     const [selectedUser, setSelectedUser] = useState([])
     const [allUsers, setAllUsers] = useState([])
+    const [debts, setDebts] = useState("")
+    const [paymentDebts, setPaymentDebts] = useState([])
 
     useEffect(() => {
         selectedTab.payments.filter((payment)=>{
@@ -32,18 +34,33 @@ function EditPayment({selectedTab}){
                 setForm({
                     id: payment.id,
                     user_id: payment.user_id,
+                    created_at: payment.created_at,
                     time: date.toLocaleTimeString([], { hour: '2-digit', minute: 
                     '2-digit' }),
                     date: date.toISOString().substr(0, 10),
                     amount: payment.amount,
                     description: payment.description
                 })
-                console.log("the one" ,payment.user)
                 setAllUsers(payment.users)
                 setSelectedUser(payment.user)
+                setPaymentDebts(payment.debts)
             }
         })},
     [selectedTab])
+
+
+    useEffect(() => {
+        let newDebts = [];
+        paymentDebts.map((debt) => {
+          allUsers.map((user) => {
+            if (debt.user_id == user.id) {
+              newDebts.push({ user_name: user.name, user_id: user.id, amount: 
+                debt.amount });
+            }
+          });
+        });
+        setDebts(newDebts);
+      }, [allUsers, paymentDebts]);
 
     //SETTING THE PAYER
 
@@ -57,8 +74,6 @@ function EditPayment({selectedTab}){
         handleChange(e)
     }
 
-    
-    console.log("selected", selectedUser)
     //HANDLING THE FORM INPUTS
 
     function handleChange(e){
@@ -72,6 +87,7 @@ function EditPayment({selectedTab}){
 
     const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
 
+    console.log(form)
 
     return(
         <>
@@ -149,19 +165,36 @@ function EditPayment({selectedTab}){
                     <div className="container">
                             <button className="btn-split mb-7">Split 
                             Equally</button>
-                            <div class="input-wrapper">
-                                <label for="amountInput">Peter</label>
-                                <IntlCurrencyInput id="amountInput" 
-                                currency="BRL" 
-                                config={currencyConfig}/>
-                            </div>
-
+                            {
+                                Array.isArray(debts) ? debts.map((debt) => 
+                                {
+                                    return (
+                                        <div class="input-wrapper">
+                                        <label for="amountInput">
+                                            {debt.user_name}
+                                        </label>
+                                        <IntlCurrencyInput id="amountInput" 
+                                        currency="BRL" 
+                                        config={currencyConfig}
+                                        value={debt.amount}
+                                        />
+                                        </div>
+                                    )
+                                })
+                                : null
+                            }
                     </div>
                 </div>
-                <button className="btn-purple m-a mt-7">Create</button>
+                <button className="btn-purple m-a mt-7">Update</button>
+                <button className="btn-purple m-a mt-7">Delete</button>
             </div>
         </form>
         </>
     )
 }
 export default EditPayment
+
+// Inside the Payment API we have debts [user_id, amount] and we have users (includes name, user id)
+    // We need to create a new array with the users and the amount they owe
+    //On change of amount they owe we change the array
+    //On change of user we remove the user selected from the owing array and add the unselected user witht the amount he owes
