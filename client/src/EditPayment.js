@@ -39,7 +39,8 @@ function EditPayment({selectedTab}){
                     '2-digit' }),
                     date: date.toISOString().substr(0, 10),
                     amount: payment.amount,
-                    description: payment.description
+                    description: payment.description,
+                    category: payment.category
                 })
                 setAllUsers(payment.users)
                 setSelectedUser(payment.user)

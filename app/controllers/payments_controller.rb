@@ -9,6 +9,6 @@ class PaymentsController < ApplicationController
 
     def params_payment
         params.require(:payment).permit(:id, :user_id, :created_at, :amount, 
-        :description)
+        :descriptio, :category)
     end
 end
