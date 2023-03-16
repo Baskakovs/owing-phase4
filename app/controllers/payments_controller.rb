@@ -16,7 +16,6 @@ class PaymentsController < ApplicationController
                 debt.update(amount: debt_to_update[:amount])
             end
         end
-        byebug
     end
 
     def params_payment

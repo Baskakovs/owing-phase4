@@ -78,18 +78,6 @@ function EditPayment({selectedTab}){
         setDebts(newDebts);
       }
 
-    //SETTING THE PAYER
-
-    function changePayer(e){
-        let newAllUserList = allUsers.filter((user) => user.id != 
-        e.target.value)
-        let newSelectedUser = allUsers.find((user) => user.id == 
-        e.target.value)
-        setAllUsers([...newAllUserList, selectedUser])
-        setSelectedUser(newSelectedUser)
-        handleChange(e)
-    }
-
     //HANDLING THE FORM INPUTS
 
     function handleChange(e){
@@ -144,6 +132,16 @@ function EditPayment({selectedTab}){
         delete debts.user_name
     }
 
+    function handleSplitEqually(){
+        let newDebts = debts.map((debt)=>{
+            return {...debt, amount: form.amount / debts.length}
+        })
+        setDebts(newDebts)
+    }
+
+    console.log(form.user_id)
+
+
     return(
         <>
         <form className={"form"} onSubmit={handleUpdate}>
@@ -153,13 +151,7 @@ function EditPayment({selectedTab}){
                 <div className="container two-col col-gap-7">
                     <div>
                     <select value={form.user_id} name={"user_id"} onChange=
-                    {changePayer}>
-                        { selectedUser != null ?
-                            <option value={selectedUser.id}>{selectedUser.name}
-                            </option>
-                            :
-                            null
-                        }
+                    {handleChange}>
                         {Array.isArray(allUsers) ? allUsers.map((user) => {
                             return (
                                 <option value={user.id} key={user.id}>
@@ -218,7 +210,8 @@ function EditPayment({selectedTab}){
                         </div>
                     </div>
                     <div className="container">
-                            <button className="btn-split mb-7">Split 
+                            <button className="btn-split mb-7" onClick=
+                            {handleSplitEqually}>Split 
                             Equally</button>
                             {
                                 Array.isArray(debts) ? debts.map((debt) => 
