@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:create, :show, :index]
   resources :tabs, only: [:show, :index]
+  resources :payments, only: [:update, :create, :destroy]
   post '/login', to: 'sessions#create'
   get '/auth', to: 'users#show'
 end

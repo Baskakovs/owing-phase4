@@ -24,7 +24,7 @@ function EditPayment({selectedTab}){
     const [form, setForm] = useState("")
     const [selectedUser, setSelectedUser] = useState([])
     const [allUsers, setAllUsers] = useState([])
-    const [debts, setDebts] = useState("")
+    const [debts, setDebts] = useState([])
     const [paymentDebts, setPaymentDebts] = useState([])
 
     useEffect(() => {
@@ -48,19 +48,33 @@ function EditPayment({selectedTab}){
         })},
     [selectedTab])
 
+    //SETTING THE DEBTS
 
     useEffect(() => {
         let newDebts = [];
         paymentDebts.map((debt) => {
           allUsers.map((user) => {
             if (debt.user_id == user.id) {
-              newDebts.push({ user_name: user.name, user_id: user.id, amount: 
+              newDebts.push({ id: debt.id,user_name: user.name, user_id: user.id, amount: 
                 debt.amount });
             }
           });
         });
         setDebts(newDebts);
       }, [allUsers, paymentDebts]);
+
+    //HANDLING THE DEBTS
+
+    function handleDebtsChange(e) {
+        let newDebts = debts.map((debt) => {
+          if (debt.id == e.target.id) {
+            return { ...debt, amount: e.target.value };
+          } else {
+            return debt;
+          }
+        });
+        setDebts(newDebts);
+      }
 
     //SETTING THE PAYER
 
@@ -87,11 +101,42 @@ function EditPayment({selectedTab}){
 
     const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
 
-    console.log(form)
+
+    //HANDLING THE UPDATE
+
+    function handleUpdate(e){
+        e.preventDefault()
+        convertForm()
+        fetch(`/payments/${form.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(form)
+        })
+        .then((res)=>{
+            if(res.ok){
+                console.log(res.json())
+            }
+        })
+    }
+
+    //CONVERTING THE FORM
+
+    function convertForm(){
+        //converting the time back to ISO
+        const date = new Date(form.date + " " + form.time);
+        const isoString = date.toISOString();
+        const time = isoString.substr(11, 8); 
+        const formattedDateTime = isoString.substr(0, 19) + "Z"; 
+        form.created_at = formattedDateTime
+        //deleting the time and date from the form
+        delete form.time
+        delete form.date
+    }
+
 
     return(
         <>
-        <form className={"form"}>
+        <form className={"form"} onSubmit={handleUpdate}>
         <input type="text" name={"description"} className={"payment-title"} 
         onChange={handleChange} value={form.description}/>
             <div className="container justify-content-center">
@@ -173,10 +218,11 @@ function EditPayment({selectedTab}){
                                         <label for="amountInput">
                                             {debt.user_name}
                                         </label>
-                                        <IntlCurrencyInput id="amountInput" 
+                                        <IntlCurrencyInput id={debt.id} 
                                         currency="BRL" 
                                         config={currencyConfig}
                                         value={debt.amount}
+                                        onChange={handleDebtsChange}
                                         />
                                         </div>
                                     )
