@@ -42,6 +42,7 @@ function EditPayment({selectedTab}){
                     description: payment.description,
                     category: payment.category
                 })
+                console.log("original debt format", payment.debts)
                 setAllUsers(payment.users)
                 setSelectedUser(payment.user)
                 setPaymentDebts(payment.debts)
@@ -56,8 +57,8 @@ function EditPayment({selectedTab}){
         paymentDebts.map((debt) => {
           allUsers.map((user) => {
             if (debt.user_id == user.id) {
-              newDebts.push({ id: debt.id,user_name: user.name, user_id: user.id, amount: 
-                debt.amount });
+            newDebts.push({ id: debt.id,user_name: user.name, user_id: 
+            user.id, amount: debt.amount, payment_id: debt.payment_id });
             }
           });
         });
@@ -107,6 +108,7 @@ function EditPayment({selectedTab}){
 
     function handleUpdate(e){
         e.preventDefault()
+        convertDebt()
         convertForm()
         fetch(`/payments/${form.id}`, {
             method: "PATCH",
@@ -132,8 +134,15 @@ function EditPayment({selectedTab}){
         //deleting the time and date from the form
         delete form.time
         delete form.date
+        //adding debts to the form
+        form.debts = debts
     }
 
+    //CONVERTING DEBT 
+
+    function convertDebt(){
+        delete debts.user_name
+    }
 
     return(
         <>
