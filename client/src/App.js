@@ -39,7 +39,7 @@ useEffect(() => {
 useEffect(() => {
   if(Array.isArray(data)){
     data.filter((tabs)=>{
-      if(tabs.id === selectedTab){
+      if(tabs.id == selectedTab || tabs.id == selectedTab.id){
           setSelectedTab(tabs)
       }
   })
@@ -56,7 +56,6 @@ function handleClose(){
 }
 
 function handleUpdateTab(res){
-  console.log("data",data)
   const newData = data.map((tab)=>{
     if(tab.id === res.tab_id){
       const newPayments = tab.payments.map((payment)=>{
@@ -83,7 +82,8 @@ function handleUpdateTab(res){
   })
   setData(newData)
   }
-  console.log(data[0], "data")
+
+  console.log("updated data", data)
 
 
 // if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
