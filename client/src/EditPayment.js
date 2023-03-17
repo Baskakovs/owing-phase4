@@ -3,7 +3,7 @@ import MoneysInput from "./MoneysInput";
 import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
 
-function EditPayment({selectedTab}){
+function EditPayment({selectedTab, handleUpdateTab}){
 
     const currencyConfig = {
         locale: "pt-BR",
@@ -69,7 +69,6 @@ function EditPayment({selectedTab}){
     //HANDLING THE DEBTS
 
     function handleDebtsChange(e) {
-        console.log(e.target.name)
         let newDebts = debts.map((debt) => {
           if (debt.id == e.target.id) {
             return { ...debt, amount: e.target.value };
@@ -106,7 +105,9 @@ function EditPayment({selectedTab}){
         })
         .then((res)=>{
             if(res.ok){
-                console.log(res.json())
+                res.json().then(data=>{
+                    handleUpdateTab(data)
+                })
             }
         })
     }
@@ -130,8 +131,6 @@ function EditPayment({selectedTab}){
         })
         setDebts(newDebts)
     }
-
-    console.log(form.amount)
 
     return(
         <>
