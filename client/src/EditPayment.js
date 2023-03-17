@@ -1,4 +1,5 @@
 import IntlCurrencyInput from "react-intl-currency-input"
+import MoneysInput from "./MoneysInput";
 import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
 
@@ -11,8 +12,8 @@ function EditPayment({selectedTab}){
             BRL: {
               style: "currency",
               currency: "GBP",
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 3,
             },
           },
         },
@@ -30,19 +31,19 @@ function EditPayment({selectedTab}){
     useEffect(() => {
         selectedTab.payments.filter((payment)=>{
             if(payment.id == params.id){
-                const date = new Date(payment.created_at);
+                let dateO = new Date(payment.created_at);
+                let timeO = new Date(payment.created_at);
                 setForm({
                     id: payment.id,
                     user_id: payment.user_id,
                     created_at: payment.created_at,
-                    time: date.toLocaleTimeString([], { hour: '2-digit', minute: 
-                    '2-digit' }),
-                    date: date.toISOString().substr(0, 10),
                     amount: payment.amount,
                     description: payment.description,
-                    category: payment.category
+                    category: payment.category,
+                    date: dateO.toISOString().slice(0, 10).toString(),
+                    time: timeO.toLocaleTimeString([], { hour: '2-digit', 
+                    minute: '2-digit' }).toString(),
                 })
-                console.log("original debt format", payment.debts)
                 setAllUsers(payment.users)
                 setSelectedUser(payment.user)
                 setPaymentDebts(payment.debts)
@@ -68,6 +69,7 @@ function EditPayment({selectedTab}){
     //HANDLING THE DEBTS
 
     function handleDebtsChange(e) {
+        console.log(e.target.name)
         let newDebts = debts.map((debt) => {
           if (debt.id == e.target.id) {
             return { ...debt, amount: e.target.value };
@@ -96,8 +98,7 @@ function EditPayment({selectedTab}){
 
     function handleUpdate(e){
         e.preventDefault()
-        convertDebt()
-        convertForm()
+        bodyConvert()
         fetch(`/payments/${form.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
@@ -112,25 +113,16 @@ function EditPayment({selectedTab}){
 
     //CONVERTING THE FORM
 
-    function convertForm(){
+    function bodyConvert(){
         //converting the time back to ISO
-        const date = new Date(form.date + " " + form.time);
+        const date = new Date(`${form.date} ${form.time}`);
         const isoString = date.toISOString();
-        const time = isoString.substr(11, 8); 
-        const formattedDateTime = isoString.substr(0, 19) + "Z"; 
+        const formattedDateTime = isoString.slice(0, 19).replace(".", "") + 
+        "Z"; 
         form.created_at = formattedDateTime
-        //deleting the time and date from the form
-        delete form.time
-        delete form.date
-        //adding debts to the form
         form.debts = debts
     }
 
-    //CONVERTING DEBT 
-
-    function convertDebt(){
-        delete debts.user_name
-    }
 
     function handleSplitEqually(){
         let newDebts = debts.map((debt)=>{
@@ -139,8 +131,7 @@ function EditPayment({selectedTab}){
         setDebts(newDebts)
     }
 
-    console.log(form.user_id)
-
+    console.log(form.amount)
 
     return(
         <>
@@ -168,11 +159,14 @@ function EditPayment({selectedTab}){
                         onChange={handleChange}/>
                         </div>
                         <div className="container two-col col-gap-7">
-                            <IntlCurrencyInput currency="BRL" config={
-                                currencyConfig} name={"amount"} value=
-                                {form.amount} onChange={handleChange}/>
-                            <IntlCurrencyInput currency="BRL" config=
-                            {currencyConfig}/>
+                            <div>
+                            <MoneysInput name={"amount"} value={form.amount} 
+                                onChange={handleChange}/>
+                            </div>
+                            <div>
+                            <MoneysInput name={"amount"} value={form.amount} 
+                                onChange={handleChange}/>
+                            </div>
                         </div>
                         <div className="container four-col">
                             {
@@ -221,12 +215,12 @@ function EditPayment({selectedTab}){
                                         <label for="amountInput">
                                             {debt.user_name}
                                         </label>
-                                        <IntlCurrencyInput id={debt.id} 
-                                        currency="BRL" 
-                                        config={currencyConfig}
-                                        value={debt.amount}
-                                        onChange={handleDebtsChange}
-                                        />
+                                            <div>
+                                                <MoneysInput id={debt.id} 
+                                                name="debt" value=
+                                                {debt.amount} 
+                                                onChange={handleDebtsChange}/>
+                                            </div>
                                         </div>
                                     )
                                 })

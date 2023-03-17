@@ -338,11 +338,28 @@ margin-bottom: 12px;
   outline: none
 }
  
-
 .nav-link{
   color: #000;
   text-decoration: none;
 }
+
+.currency-wrap{
+  position:relative;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.currency-code{
+  position:absolute;
+  left:8px;
+  top:12px;
+}
+
+.text-currency{
+  border-radius:5px;
+  padding-left: 20px;
+}
+
 
 
 
