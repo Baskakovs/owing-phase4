@@ -6,6 +6,12 @@ class PaymentsController < ApplicationController
         render json: payment, status: :accepted
     end
 
+    def destroy
+        payment = Payment.find(params[:id])
+        payment.destroy
+        head :no_content, status: :ok
+    end
+
     private
 
     def update_debts

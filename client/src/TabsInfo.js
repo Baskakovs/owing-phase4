@@ -1,6 +1,6 @@
 import TabsInfoCard from "./TabsInfoCard"
+import { NavLink } from "react-router-dom"
 function TabsInfo({onClose, left, selectedTab}){
-console.log(selectedTab)
 
 const {payments} = selectedTab
 
@@ -11,6 +11,11 @@ const {payments} = selectedTab
             {
                 Array.isArray(payments) ? payments.map(payment => <TabsInfoCard key={payment.id} selectedTab={payment}/>) : null
             }
+            <NavLink to={`/new_payment`}>
+                <div className="text-center">
+                    <button className="btn-purple m-a mt-7 m-a w-90">+</button>
+                </div>
+            </NavLink>
         </div>
     )
 }

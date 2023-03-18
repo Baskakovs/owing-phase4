@@ -1,4 +1,3 @@
-import IntlCurrencyInput from "react-intl-currency-input"
 import MoneysInput from "./MoneysInput";
 import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
@@ -132,6 +131,19 @@ function EditPayment({selectedTab, handleUpdateTab}){
         setDebts(newDebts)
     }
 
+    function handleDeletePayment(){
+        fetch(`/payments/${form.id}`, {
+            method: "DELETE",
+        })
+        .then((res)=>{
+            if(res.ok){
+                res.json().then(data=>{
+                    console.log("deleted")
+                })
+            }
+        })
+    }
+
     return(
         <>
         <form className={"form"} onSubmit={handleUpdate}>
@@ -228,7 +240,7 @@ function EditPayment({selectedTab, handleUpdateTab}){
                     </div>
                 </div>
                 <button className="btn-purple m-a mt-7">Update</button>
-                <button className="btn-purple m-a mt-7">Delete</button>
+                <button onClick={handleDeletePayment} className="btn-split mb-7">Delete</button>
             </div>
         </form>
         </>

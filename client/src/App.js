@@ -59,10 +59,7 @@ function handleUpdateTab(res){
   const newData = data.map((tab)=>{
     if(tab.id === res.tab_id){
       const newPayments = tab.payments.map((payment)=>{
-        console.log(tab, "1")
-        console.log(res, "2")
         if(payment.id === res.id){
-          console.log(payment.user, "3")
           return {
             ...payment,
             amount: res.amount,
@@ -87,8 +84,6 @@ function handleUpdateTab(res){
   setData(newData)
   }
 
-  // console.log(data[0].payments[0], "data")
-
   function findNewPayer(res, tab){
     let newUser = tab.users.filter((user)=>{
       if(user.id == res.user_id){
@@ -112,6 +107,10 @@ function handleUpdateTab(res){
         </Route>
         <Route path="/payment/:id">
           <EditPayment selectedTab={selectedTab} handleUpdateTab=
+          {handleUpdateTab}/>
+        </Route>
+        <Route path="/new_payment">
+          <NewPayment selectedTab={selectedTab} handleUpdateTab=
           {handleUpdateTab}/>
         </Route>
       </Switch>
