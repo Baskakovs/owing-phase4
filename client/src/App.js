@@ -59,14 +59,18 @@ function handleUpdateTab(res){
   const newData = data.map((tab)=>{
     if(tab.id === res.tab_id){
       const newPayments = tab.payments.map((payment)=>{
+        console.log(tab, "1")
+        console.log(res, "2")
         if(payment.id === res.id){
+          console.log(payment.user, "3")
           return {
             ...payment,
             amount: res.amount,
             description: res.description,
             category: res.category,
             created_at: res.created_at,
-            user_id: res.user_id
+            user_id: res.user_id,
+            user: findNewPayer(res, tab)
           }
         } else {
           return payment
@@ -83,8 +87,16 @@ function handleUpdateTab(res){
   setData(newData)
   }
 
-  console.log("updated data", data)
+  // console.log(data[0].payments[0], "data")
 
+  function findNewPayer(res, tab){
+    let newUser = tab.users.filter((user)=>{
+      if(user.id == res.user_id){
+        return user
+      }
+    })
+    return newUser[0]
+  }
 
 // if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
 

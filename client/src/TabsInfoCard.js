@@ -8,6 +8,7 @@ function TabsInfoCard({selectedTab}){
     const {id, category, description, created_at, user} = selectedTab
     const {name} = user
 
+    console.log(user, "user in card")
         //FORMATING DATA AND TIME
         const date = new Date(created_at);
         // format time

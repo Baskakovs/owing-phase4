@@ -1,9 +1,7 @@
 import TabsInfo from "./TabsInfo";
 import TabsList from "./TabsList";
 
-import React, {useState, useEffect} from "react";
-
-function Tab({tabList, handleTransitionLeft, left, selectedTab, setSelectedTab, handleClose}){
+function Tab({tabList, handleTransitionLeft, left, selectedTab, handleClose}){
 
     return(
         <div className={left ? "container heigh-100 justify-content-center two-col" : null}>
