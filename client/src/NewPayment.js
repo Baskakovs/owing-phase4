@@ -2,7 +2,7 @@ import MoneysInput from "./MoneysInput";
 import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
 
-function EditPayment({selectedTab, handleUpdateTab}){
+function EditPayment({selectedTab, handleNewPayment}){
 
     const {users} = selectedTab
     let debtUserList = []
@@ -38,7 +38,8 @@ function EditPayment({selectedTab, handleUpdateTab}){
 
     //EMOJIS
 
-    const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
+    const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", 
+    taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
 
     function handleCreate(){
         return null
@@ -76,7 +77,7 @@ function EditPayment({selectedTab, handleUpdateTab}){
         .then((res)=>{
             if(res.ok){
                 res.json().then(data=>{
-                    console.log(data)
+                    handleNewPayment(data)
                 })
             }
         })
@@ -92,7 +93,6 @@ function EditPayment({selectedTab, handleUpdateTab}){
         console.log(isoString, "2")
         const formattedDateTime = isoString.slice(0, 19).replace(".", "") + 
         "Z"; 
-        console.log(formattedDateTime, "3")
         form.created_at = formattedDateTime
         form.debts = debts
     }

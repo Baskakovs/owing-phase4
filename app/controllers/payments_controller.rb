@@ -11,7 +11,9 @@ class PaymentsController < ApplicationController
         params[:category], amount: params[:amount], user_id: params[:user_id], 
         tab_id: params[:tab_id])
         create_debts(payment.id)
-        render json: payment, status: :created
+        tab = Tab.find(params[:tab_id])
+        render json: tab, include: { payments: { include: [:user, :users, 
+        :debts] }, users: {} }
     end
 
     def destroy
@@ -46,6 +48,5 @@ class PaymentsController < ApplicationController
             amount: debt_to_create[:amount])
         end
     end
-
 
 end

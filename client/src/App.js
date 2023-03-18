@@ -93,6 +93,18 @@ function handleUpdateTab(res){
     return newUser[0]
   }
 
+  function handleNewPayment(res){
+    console.log(res, "res")
+    const newData = data.map((tab)=>{
+      if(res.id == tab.id){
+        return res 
+      }else{
+        return tab
+      }
+    })
+    setData(newData)
+  }
+
 // if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
 
   return (
@@ -111,7 +123,7 @@ function handleUpdateTab(res){
         </Route>
         <Route path="/new_payment">
           <NewPayment selectedTab={selectedTab} handleUpdateTab=
-          {handleUpdateTab}/>
+          {handleUpdateTab} handleNewPayment={handleNewPayment}/>
         </Route>
       </Switch>
       </BrowserRouter>
