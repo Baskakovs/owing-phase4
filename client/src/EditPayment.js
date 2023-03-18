@@ -2,7 +2,7 @@ import MoneysInput from "./MoneysInput";
 import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
 
-function EditPayment({selectedTab, handleUpdateTab}){
+function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
     const currencyConfig = {
         locale: "pt-BR",
@@ -33,6 +33,7 @@ function EditPayment({selectedTab, handleUpdateTab}){
                 let dateO = new Date(payment.created_at);
                 let timeO = new Date(payment.created_at);
                 setForm({
+                    tab_id: selectedTab.id,
                     id: payment.id,
                     user_id: payment.user_id,
                     created_at: payment.created_at,
@@ -132,15 +133,14 @@ function EditPayment({selectedTab, handleUpdateTab}){
 
     //HANDLING THE DELETE
 
-    function handleDeletePayment(){
+    function onhandleDeletePayment(){
         fetch(`/payments/${form.id}`, {
             method: "DELETE",
         })
         .then((res)=>{
             if(res.ok){
-                res.json().then(data=>{
-                    console.log("deleted")
-                })
+                console.log("ok")
+                handleDeletePayment(form.id, form.tab_id)
             }
         })
     }
@@ -241,7 +241,7 @@ function EditPayment({selectedTab, handleUpdateTab}){
                     </div>
                 </div>
                 <button className="btn-purple m-a mt-7">Update</button>
-                <button onClick={handleDeletePayment} className="btn-split mb-7">Delete</button>
+                <button onClick={onhandleDeletePayment} className="btn-split mb-7">Delete</button>
             </div>
         </form>
         </>

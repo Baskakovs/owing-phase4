@@ -105,6 +105,21 @@ function handleUpdateTab(res){
     setData(newData)
   }
 
+  function handleDeletePayment(payment_id, tab_id){
+    console.log(payment_id, tab_id, "payment_id, tab_id")
+    setData(prevData => prevData.map((tab)=>{
+      if(tab.id == tab_id){
+        const newPaymentList =  tab.payments.filter((payment)=>{
+          if(payment.id != payment_id){
+            return payment
+          }
+        })
+        return {...tab, payments: newPaymentList};
+      }
+      return tab;
+    }));
+  }
+
 // if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
 
   return (
@@ -119,7 +134,7 @@ function handleUpdateTab(res){
         </Route>
         <Route path="/payment/:id">
           <EditPayment selectedTab={selectedTab} handleUpdateTab=
-          {handleUpdateTab}/>
+          {handleUpdateTab} handleDeletePayment={handleDeletePayment}/>
         </Route>
         <Route path="/new_payment">
           <NewPayment selectedTab={selectedTab} handleUpdateTab=
