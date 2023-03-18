@@ -91,6 +91,25 @@ function EditPayment({selectedTab, handleUpdateTab}){
 
     const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
 
+    //CONVERTING THE FORM
+
+    function bodyConvert(){
+        //converting the time back to ISO
+        const date = new Date(`${form.date} ${form.time}`);
+        const isoString = date.toISOString();
+        const formattedDateTime = isoString.slice(0, 19).replace(".", "") + 
+        "Z"; 
+        form.created_at = formattedDateTime
+        form.debts = debts
+    }
+
+
+    function handleSplitEqually(){
+        let newDebts = debts.map((debt)=>{
+            return {...debt, amount: form.amount / debts.length}
+        })
+        setDebts(newDebts)
+    }
 
     //HANDLING THE UPDATE
 
@@ -111,25 +130,7 @@ function EditPayment({selectedTab, handleUpdateTab}){
         })
     }
 
-    //CONVERTING THE FORM
-
-    function bodyConvert(){
-        //converting the time back to ISO
-        const date = new Date(`${form.date} ${form.time}`);
-        const isoString = date.toISOString();
-        const formattedDateTime = isoString.slice(0, 19).replace(".", "") + 
-        "Z"; 
-        form.created_at = formattedDateTime
-        form.debts = debts
-    }
-
-
-    function handleSplitEqually(){
-        let newDebts = debts.map((debt)=>{
-            return {...debt, amount: form.amount / debts.length}
-        })
-        setDebts(newDebts)
-    }
+    //HANDLING THE DELETE
 
     function handleDeletePayment(){
         fetch(`/payments/${form.id}`, {

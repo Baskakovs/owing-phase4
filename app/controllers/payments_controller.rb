@@ -6,8 +6,17 @@ class PaymentsController < ApplicationController
         render json: payment, status: :accepted
     end
 
+    def create
+        payment = Payment.create(description: params[:description], category: 
+        params[:category], amount: params[:amount], user_id: params[:user_id], 
+        tab_id: params[:tab_id])
+        create_debts(payment.id)
+        render json: payment, status: :created
+    end
+
     def destroy
         payment = Payment.find(params[:id])
+        payment.debts.destroy_all
         payment.destroy
         head :no_content, status: :ok
     end
@@ -27,6 +36,15 @@ class PaymentsController < ApplicationController
     def params_payment
         params.require(:payment).permit(:id, :user_id, :created_at, :amount, 
         :description, :category)
+    end
+
+    def create_debts(payment_id)
+        debts = params[:debts]
+        debts.each do |debt_to_create|
+            Debt.create(payment_id: payment_id, user_id:        
+            debt_to_create[:user_id], 
+            amount: debt_to_create[:amount])
+        end
     end
 
 
