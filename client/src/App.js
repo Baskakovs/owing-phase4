@@ -5,6 +5,7 @@ import Login from './Login';
 import Tab from './Tab';
 import EditPayment from './EditPayment';
 import NewPayment from './NewPayment';
+import NewTab from './NewTab';
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 function App() {
 
@@ -139,6 +140,9 @@ function handleUpdateTab(res){
         <Route path="/new_payment">
           <NewPayment selectedTab={selectedTab} handleUpdateTab=
           {handleUpdateTab} handleNewPayment={handleNewPayment}/>
+        </Route>
+        <Route path="/new_tab">
+          <NewTab/>
         </Route>
       </Switch>
       </BrowserRouter>

@@ -1,6 +1,7 @@
 import TabCard from "./TabCard"
 
 import React, {useState} from "react"
+import {NavLink} from "react-router-dom"
 
 function Tabs({handleTransitionLeft, left, tabList}){
 
@@ -11,6 +12,13 @@ function Tabs({handleTransitionLeft, left, tabList}){
                 {
                     Array.isArray(tabList) ? tabList.map(tab => <TabCard onTransitionLeft={handleTransitionLeft} key={tab.id} tab={tab}/>) : null
                 }
+                <NavLink to={`/new_tab`}>
+                    <div className="text-center">
+                        <button className="btn-purple m-a mt-7 m-a w-90">
+                            +
+                        </button>
+                    </div>
+                </NavLink>
             </div>
         </div>
     )

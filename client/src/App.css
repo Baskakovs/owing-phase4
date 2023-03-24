@@ -138,6 +138,10 @@ select{
   width: 90%;
 }
 
+.w-100{
+  width: 100%;
+}
+
 .btn-white-form{  
   background-color: #FFFFFF;
   color: #7774FF;
@@ -185,6 +189,25 @@ img{
   color: #7774FF;
   cursor: pointer;
   text-decoration: underline;
+}
+
+.btn-delete-user {
+  position: absolute;
+  top: 50%;
+  right: 5px; /* move the button 5 pixels from the right edge of the input */
+  transform: translateY(-50%); /* vertically center the button within the input container */
+  height: 10px;
+  width: 10px;
+  background-color: transparent;
+  border: none;
+  background-image: url("./close.png") ;
+  background-repeat: no-repeat;
+  background-size: 10px;
+  cursor: pointer;
+}
+
+.position-relative{
+  position: relative;
 }
 
 /*Grid*/
