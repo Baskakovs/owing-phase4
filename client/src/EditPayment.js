@@ -1,6 +1,7 @@
 import MoneysInput from "./MoneysInput";
 import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
+import { useHistory } from 'react-router-dom';
 
 function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
@@ -145,8 +146,15 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         })
     }
 
+    const history = useHistory();
+
+    function goBack() {
+        history.goBack();
+    }
+
     return(
         <>
+        <button onClick={goBack} className="btn-close"></button>
         <form className={"form"} onSubmit={handleUpdate}>
         <input type="text" name={"description"} className={"payment-title"} 
         onChange={handleChange} value={form.description}/>
