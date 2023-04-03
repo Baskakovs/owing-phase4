@@ -1,5 +1,6 @@
 import { useHistory } from "react-router-dom"
 import { useState, useEffect } from "react"
+import MoneysInput from "./MoneysInput";
 function NewTab(){
     const history = useHistory()
     function goBack(){
@@ -7,9 +8,14 @@ function NewTab(){
     }
 
     const [form, setForm] = useState({
-        description: ""
+        description: "",
+        user1: "",
+        user2:"",
+        user3: "",
+        user4: "",
+        user5: "",
+        user6: "",
     })
-    const [numUsers, setNumUsers] = useState(1)
 
     function handleChange(e){
         let name = e.target.name
@@ -20,45 +26,72 @@ function NewTab(){
         })
     }
 
-    function addUserInput(){
-        const inputs = Array(numUsers).fill()
-        return inputs.map((_, index) => (
-            <div className="container position-relative">
-                <input id={"inputLabel"} type="email" name={"email"} 
-                placeholder=
-                {"Email..."}/>
-                <button onClick={goBack} className="btn-delete-user"></button>
-            </div>
-        ));
+    function handleSubmit(e){
+        e.preventDefault()
+        cleanForm()
+        fetch(`/tabs`,{
+            method: "PUT",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(form)
+        })
     }
 
-    useEffect(() => {
-        {
-            addUserInput()
-        }
-    }, [numUsers])
-
-    function removeUser(){
+    function cleanForm(){
+        let newForm = Object.keys(form).filter((entry)=>{
+            if(entry != "description" || entry != ""){
+                return entry
+            }else{
+                return null
+            }
+        })
+        setForm(newForm)
     }
+
+    console.log(form)
+
 
     return(
         <>
-        <button onClick={removeUser} className="btn-close"></button>
-        <form className={"form"}>
+        <button onClick={goBack} className="btn-close"></button>
+        <form className={"form"} onSubmit={handleSubmit}>
             <input type="text" name={"description"} className={"payment-title"} 
             onChange={handleChange} value={form.description} placeholder={"Name the tab..."}
             autoFocus/>
             <div className="container justify-content-center">
-                <div className="container">
-                    {addUserInput()}
-                    <button className="btn-purple m-a mt-7 m-a w-
-                    100" onClick={(e)=>{
-                        e.preventDefault()
-                        setNumUsers(numUsers+1)
-                        }}>
-                        Add User
-                    </button>
+                    <div className="container">
+                        <label>Send invitations to join the tab</label>
+                        <div className="container position-relative">
+                            <input id={"inputLabel"} name={"user1"} value={form.user1} onChange={handleChange} placeholder={"Email..."}/>
+                        </div>
+                        <div className="container position-relative">
+                            <input id={"inputLabel"} name={"user2"}value={form.user2} onChange={handleChange} placeholder={"Email..."}/>
+                        </div>
+                        <div className="container position-relative">
+                            <input id={"inputLabel"} name={"user3"} value={form.user3} onChange={handleChange} placeholder={"Email..."}/>
+                            {/* <button className="btn-delete-user"></button> */}
+                        </div>
+                        <div className="container position-relative">
+                        </div>
                 </div>
+                <div className="container two-col col-gap-7">
+                    <div>
+                        <label for="primary-currency">Primary Currency</label>
+                        <select name="primary-currency">
+                            <option value={"GBP"} defaultValue>GBP</option>
+                            <option value={"GBP"}>EUR</option>
+                            <option value={"GBP"}>USD</option>
+                        </select>
+                    </div>
+                    <div>
+                    <label for="primary-currency">Secondary Currency</label>
+                        <select name="primary-currency">
+                            <option value={"GBP"}>GBP</option>
+                            <option value={"GBP"} defaultValue>EUR</option>
+                            <option value={"GBP"}>USD</option>
+                        </select>
+                    </div>
+                </div>
+                <button className="btn-purple m-a mt-7">Create</button>
             </div>
         </form>
         
