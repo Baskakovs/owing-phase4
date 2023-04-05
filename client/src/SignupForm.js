@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
-function SignupForm(){
+function SignupForm({setCurrentUser}){
+
+    console.log(setCurrentUser)
 
     const [signUpForm, setSignUpForm] = useState({
         email: "",
         name: "",
         password: "",
-        confirmPassword: ""
+        // confirmPassword: ""
     })
 
     const [errors, setErrors] = useState([])
@@ -28,14 +30,11 @@ function SignupForm(){
         })
         .then(res => {
             if(res.ok){
-                // return res.json(setCurrentUser)
-                console.log("success")
+                res.json().then(user => setCurrentUser(user))
             }else{
-                // res.json.then(errors => setErrors(Object.entries(e.error).flat()))
-                console.log("error")
+                res.json().then(errors => setErrors(errors.errors))
             }
         })
-
     }
 
     return(

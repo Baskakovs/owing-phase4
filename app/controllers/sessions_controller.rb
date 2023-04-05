@@ -9,4 +9,10 @@ class SessionsController < ApplicationController
             render json: {error: "Invalid username or password"}, status: 401
         end
     end
+
+    def destroy
+        session.delete :user_id
+        render json: {message: "Logged out"}
+    end
+
 end

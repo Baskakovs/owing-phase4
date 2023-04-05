@@ -1,7 +1,8 @@
 import TabsInfo from "./TabsInfo";
 import TabsList from "./TabsList";
 
-function Tab({tabList, handleTransitionLeft, left, selectedTab, handleClose}){
+function Tab({tabList, handleTransitionLeft, left, selectedTab, handleClose, 
+    setCurrentUser}){
 
     return(
         <div className={left ? "container heigh-100 justify-content-center two-col" : null}>

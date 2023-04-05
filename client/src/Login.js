@@ -8,7 +8,7 @@ function Login({setCurrentUser}){
     return(
         <div className="container two-col height-100 align-content-center">
             <div className="m-a">
-                {login? <LoginForm setCurrentUser={setCurrentUser}/> : <SignupForm/>}
+                {login? <LoginForm setCurrentUser={setCurrentUser}/> : <SignupForm setCurrentUser={setCurrentUser}/>}
                 <div className="cntr">
                     <button onClick={()=>setLogin(!login)} className="login-btn">{login ? "Signup" : 
                     "Login"}</button>

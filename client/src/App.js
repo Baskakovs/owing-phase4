@@ -6,7 +6,7 @@ import Tab from './Tab';
 import EditPayment from './EditPayment';
 import NewPayment from './NewPayment';
 import NewTab from './NewTab';
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import {BrowserRouter, Switch, Route, useHistory} from "react-router-dom";
 function App() {
 
 const [currentUser, setCurrentUser] = useState("")
@@ -121,12 +121,26 @@ function handleUpdateTab(res){
     }));
   }
 
-// if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
+  const history = useHistory()
+
+  function handleLogout(){
+    fetch(`/logout`,{
+      method: "DELETE",
+    })
+    .then((res)=>{
+      if(res.ok){
+          setCurrentUser(null)
+      }
+    })
+  }
+
+if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
 
   return (
     <>
     <div className=" align-content-center">
     <BrowserRouter>
+      <button onClick={handleLogout}>Logout</button>
       <Switch>
         <Route exact path="/">
           <Tab tabList={data} handleTransitionLeft={handleTransitionLeft} 
@@ -143,6 +157,9 @@ function handleUpdateTab(res){
         </Route>
         <Route path="/new_tab">
           <NewTab/>
+        </Route>
+        <Route path="/login">
+          <Login setCurrentUser={setCurrentUser}/>
         </Route>
       </Switch>
       </BrowserRouter>

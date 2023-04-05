@@ -28,26 +28,13 @@ function NewTab(){
 
     function handleSubmit(e){
         e.preventDefault()
-        cleanForm()
         fetch(`/tabs`,{
-            method: "PUT",
+            method: "POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(form)
         })
     }
 
-    function cleanForm(){
-        let newForm = Object.keys(form).filter((entry)=>{
-            if(entry != "description" || entry != ""){
-                return entry
-            }else{
-                return null
-            }
-        })
-        setForm(newForm)
-    }
-
-    console.log(form)
 
 
     return(
@@ -59,13 +46,16 @@ function NewTab(){
             autoFocus/>
             <div className="container justify-content-center">
                     <div className="container">
-                        <label>Send invitations to join the tab</label>
+                        <h4>Send invitations to join the tab</h4>
+                        <label>User 1</label>
                         <div className="container position-relative">
                             <input id={"inputLabel"} name={"user1"} value={form.user1} onChange={handleChange} placeholder={"Email..."}/>
                         </div>
+                        <label>User 2</label>
                         <div className="container position-relative">
                             <input id={"inputLabel"} name={"user2"}value={form.user2} onChange={handleChange} placeholder={"Email..."}/>
                         </div>
+                        <label>User 3</label>
                         <div className="container position-relative">
                             <input id={"inputLabel"} name={"user3"} value={form.user3} onChange={handleChange} placeholder={"Email..."}/>
                             {/* <button className="btn-delete-user"></button> */}
@@ -73,6 +63,7 @@ function NewTab(){
                         <div className="container position-relative">
                         </div>
                 </div>
+                <h4>Currencies Selection</h4>
                 <div className="container two-col col-gap-7">
                     <div>
                         <label for="primary-currency">Primary Currency</label>
