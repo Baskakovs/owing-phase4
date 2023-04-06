@@ -1,7 +1,7 @@
 import MoneysInput from "./MoneysInput";
+import ErrorsDisplay from "./ErrorsDisplay";
 import React, {useState, useEffect} from "react"
-import {useParams} from "react-router-dom"
-import { useHistory } from 'react-router-dom';
+import {useParams, useHistory} from "react-router-dom"
 
 function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
@@ -115,6 +115,8 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
     //HANDLING THE UPDATE
 
+    const [errors, setErrors] = useState([])
+
     function handleUpdate(e){
         e.preventDefault()
         bodyConvert()
@@ -127,7 +129,10 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
             if(res.ok){
                 res.json().then(data=>{
                     handleUpdateTab(data)
+                    history.push("/")
                 })
+            }else{
+                res.json().then((e)=>{setErrors(e.errors)})
             }
         })
     }
@@ -252,12 +257,8 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                 <button onClick={onhandleDeletePayment} className="btn-split mb-7">Delete</button>
             </div>
         </form>
+        <ErrorsDisplay errors={errors}/>
         </>
     )
 }
 export default EditPayment
-
-// Inside the Payment API we have debts [user_id, amount] and we have users (includes name, user id)
-    // We need to create a new array with the users and the amount they owe
-    //On change of amount they owe we change the array
-    //On change of user we remove the user selected from the owing array and add the unselected user witht the amount he owes

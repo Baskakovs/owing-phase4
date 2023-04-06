@@ -1,19 +1,29 @@
 class PaymentsController < ApplicationController
     def update
+        # byebug
         payment = Payment.find(params[:id])
         payment.update(params_payment)
         update_debts
-        render json: payment, status: :accepted
+        if payment.valid?
+            update_debts
+            render json: payment, status: :accepted
+        else
+            unprocessable_entity(payment)
+        end
     end
 
     def create
         payment = Payment.create(description: params[:description], category: 
         params[:category], amount: params[:amount], user_id: params[:user_id], 
-        tab_id: params[:tab_id])
+        tab_id: params[:tab_id], created_at: params[:created_at])
         create_debts(payment.id)
         tab = Tab.find(params[:tab_id])
-        render json: tab, include: { payments: { include: [:user, :users, 
-        :debts] }, users: {} }
+        if payment.valid? && tab.valid?
+            render json: tab, include: { payments: { include: [:user, :users, 
+            :debts] }, users: {} }, status: :created
+        else
+            unprocessable_entity(payment)
+        end
     end
 
     def destroy
@@ -47,6 +57,11 @@ class PaymentsController < ApplicationController
             debt_to_create[:user_id], 
             amount: debt_to_create[:amount])
         end
+    end
+
+    def unprocessable_entity(payment)
+        render json: { errors: payment.errors.full_messages }, status: 
+        :unprocessable_entity
     end
 
 end

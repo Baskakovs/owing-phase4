@@ -5,7 +5,7 @@ import React, {useState, useEffect} from 'react'
 
 function Login({setCurrentUser}){
 
-    const [errors, setErrors] = useState()
+    const [errors, setErrors] = useState([])
     const [login, setLogin] = useState(true)
 
     useEffect(()=>{setErrors()},[login])
@@ -22,13 +22,19 @@ function Login({setCurrentUser}){
                 {login? <LoginForm setCurrentUser={setCurrentUser} setErrors={setErrors}/> : <SignupForm setCurrentUser={setCurrentUser} setErrors={setErrors}/>}
                 <div className="cntr">
                     <button onClick={()=>setLogin(!login)} className="login-btn">{login ? "Signup" : 
-                    "Login"}</button>
-                </div>
-                <div>
-                    <ul>{Array.isArray(errors) ? errors.map((error)=>{
-                        return <li>{error}</li>
-                        }): null}
-                    </ul> 
+                    "Login"}
+                    </button>
+                    {
+                        Array.isArray(errors) && errors.length > 0 ?
+                        <div className='login-error-box'>
+                            <ul className='errors-list'>{Array.isArray(errors) ? errors.map((error)=>{
+                                return <li className='errors-list-item'>{error}</li>
+                                }): null}
+                            </ul> 
+                         </div>
+                         :
+                        null
+                    }
                 </div>
             </div>
             <div className="m-a">

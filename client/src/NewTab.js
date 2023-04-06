@@ -1,3 +1,4 @@
+import ErrorsDisplay from "./ErrorsDisplay"
 import { useHistory } from "react-router-dom"
 import { useState } from "react"
 
@@ -8,13 +9,10 @@ function NewTab({handleNewTab}){
     }
 
     const [form, setForm] = useState({
-        description: "",
+        name: "",
         user1: "",
         user2:"",
         user3: "",
-        user4: "",
-        user5: "",
-        user6: "",
     })
 
     function handleChange(e){
@@ -25,6 +23,8 @@ function NewTab({handleNewTab}){
             [name]: value
         })
     }
+
+    const [errors, setErrors] = useState([])
 
     function handleSubmit(e){
         e.preventDefault()
@@ -39,34 +39,33 @@ function NewTab({handleNewTab}){
                     handleNewTab(data)
                     history.push(`/`)
                 })
+            }else{
+                res.json().then((e)=>setErrors(e.errors))
             }
         })
     }
 
-
-
     return(
-        <>
+        <div className="container align-content-center">
         <button onClick={goBack} className="btn-close"></button>
         <form className={"form"} onSubmit={handleSubmit}>
-            <input type="text" name={"description"} className={"payment-title"} 
-            onChange={handleChange} value={form.description} placeholder={"Name the tab..."}
+            <input type="text" name={"name"} className={"payment-title"} 
+            onChange={handleChange} value={form.name} placeholder={"Name the tab..."}
             autoFocus/>
             <div className="container justify-content-center">
                     <div className="container">
                         <h4>Send invitations to join the tab</h4>
                         <label>User 1</label>
                         <div className="container position-relative">
-                            <input id={"inputLabel"} name={"user1"} value={form.user1} onChange={handleChange} placeholder={"Email..."}/>
+                            <input type="email" id={"inputLabel"} name={"user1"} value={form.user1} onChange={handleChange} placeholder={"Email..."}/>
                         </div>
                         <label>User 2</label>
                         <div className="container position-relative">
-                            <input id={"inputLabel"} name={"user2"}value={form.user2} onChange={handleChange} placeholder={"Email..."}/>
+                            <input type="email" id={"inputLabel"} name={"user2"}value={form.user2} onChange={handleChange} placeholder={"Email..."}/>
                         </div>
                         <label>User 3</label>
                         <div className="container position-relative">
-                            <input id={"inputLabel"} name={"user3"} value={form.user3} onChange={handleChange} placeholder={"Email..."}/>
-                            {/* <button className="btn-delete-user"></button> */}
+                            <input type="email" id={"inputLabel"} name={"user3"} value={form.user3} onChange={handleChange} placeholder={"Email..."}/>
                         </div>
                         <div className="container position-relative">
                         </div>
@@ -93,9 +92,8 @@ function NewTab({handleNewTab}){
                 <button className="btn-purple m-a mt-7">Create</button>
             </div>
         </form>
-        
-
-        </>
+        <ErrorsDisplay errors={errors}/>
+        </div>
     )
 }
 export default NewTab

@@ -1,4 +1,5 @@
 import MoneysInput from "./MoneysInput";
+import ErrorsDisplay from "./ErrorsDisplay";
 import React, {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
 import { useHistory } from 'react-router-dom';
@@ -31,20 +32,22 @@ function EditPayment({selectedTab, handleNewPayment}){
     //HANDLING THE FORM INPUTS
 
     function handleChange(e){
+        let name = e.target.name
+        let value = e.target.value
         setForm({
             ...form,
-            [e.target.name]: e.target.value
+            [name]: value
         })
+
+        //Clearing the errors when the user starts typing date, time or         description
+        if(name === "date" || name === "time" || name === "description")
+        {setErrors([])}
     }
 
     //EMOJIS
 
     const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", 
     taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
-
-    function handleCreate(){
-        return null
-    }
 
     function handleDebts(e){
         let newDebts = debts.map((debt)=>{
@@ -67,35 +70,46 @@ function EditPayment({selectedTab, handleNewPayment}){
 
     //HANDLING THE SUBMIT
 
+    const [errors, setErrors] = useState([])
+
     function handleCreate(e){
         e.preventDefault()
-        bodyConvert()
-        fetch(`/payments`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(form)
-        })
-        .then((res)=>{
-            if(res.ok){
-                res.json().then(data=>{
-                    handleNewPayment(data)
-                })
-            }
-        })
+        if(bodyConvert() === true){
+            fetch(`/payments`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form)
+            })
+            .then((res)=>{
+                if(res.ok){
+                    res.json().then(data=>{
+                        handleNewPayment(data)
+                        history.push('/')
+                    })
+                }else{
+                    res.json().then((e)=>{ setErrors(e.errors)})
+                }
+            })
+        }
     }
 
     //CONVERTING THE FORM
 
     function bodyConvert(){
-        //converting the time back to ISO
-        const date = new Date(`${form.date} ${form.time}`);
-        console.log(date, "1")
-        const isoString = date.toISOString();
-        console.log(isoString, "2")
-        const formattedDateTime = isoString.slice(0, 19).replace(".", "") + 
-        "Z"; 
-        form.created_at = formattedDateTime
-        form.debts = debts
+        if(form.date !== undefined && form.time !== undefined){
+            //converting the time back to ISO
+            const date = new Date(`${form.date} ${form.time}`);
+            const isoString = date.toISOString();
+            const formattedDateTime = isoString.slice(0, 19).replace(".", "") + 
+            "Z"; 
+            form.created_at = formattedDateTime
+            form.debts = debts
+            return true
+        }else{
+            const newErrors = ["Please select date and time."];
+            setErrors(newErrors);
+            return false
+        }
     }
 
     const history = useHistory();
@@ -204,6 +218,7 @@ function EditPayment({selectedTab, handleNewPayment}){
                 <button className="btn-purple m-a mt-7">Create</button>
             </div>
         </form>
+        <ErrorsDisplay errors={errors}/>
         </>
     )
 }

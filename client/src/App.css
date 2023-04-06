@@ -316,6 +316,10 @@ img{
   width: 50%;
 }
 
+.w-366{
+  width: 366px;
+}
+
 .align-content-center{
   align-items: center;
 }
@@ -390,6 +394,30 @@ margin-bottom: 12px;
 .text-currency{
   border-radius:5px;
   padding-left: 20px;
+}
+
+
+/*Error Handling*/
+.login-error-box{
+  background-color: rgba(255, 0, 0, 0.4);;
+  padding: 10px 0px 10px;
+  border-radius: 6px;
+  margin-top: 15px;
+  color: #000;
+  text-align: start;
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.errors-list{
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+}
+
+.errors-list-item{
+  flex-grow: 1;
 }
 
 
