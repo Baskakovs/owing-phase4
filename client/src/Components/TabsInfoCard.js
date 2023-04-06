@@ -24,7 +24,7 @@ function TabsInfoCard({selectedTab}){
     //==========================
     const emojis = {plane: "✈️", food: "🌮️", medicine: "💊", entertainment: "💃", taxi: "🚕", drinks: "🍺", energy: "⚡️", cash: "💵"}
 
-    const [emojiCategory, setEmojiCategory] = useState(emojis[category])
+    const emojiCategory = useState(emojis[category])
 
     //HANDLING CLICK
     //==============

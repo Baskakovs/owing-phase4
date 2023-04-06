@@ -1,5 +1,3 @@
-//Importing dependencies
-import { useHistory } from "react-router-dom";
 //Importing components
 import TabsInfo from "./TabsInfo";
 import TabsList from "./TabsList";

@@ -5,25 +5,10 @@ import {useParams, useHistory} from "react-router-dom"
 
 function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
-    const currencyConfig = {
-        locale: "pt-BR",
-        formats: {
-          number: {
-            BRL: {
-              style: "currency",
-              currency: "GBP",
-              minimumFractionDigits: 1,
-              maximumFractionDigits: 3,
-            },
-          },
-        },
-      };
-
     //FILTEREING OUT THE RIGHT PAYMENT FROM THE SELECTED TAB DATA
 
     const params = useParams()
     const [form, setForm] = useState("")
-    const [selectedUser, setSelectedUser] = useState([])
     const [allUsers, setAllUsers] = useState([])
     const [debts, setDebts] = useState([])
     const [paymentDebts, setPaymentDebts] = useState([])
@@ -31,7 +16,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
     useEffect(() => {
         if(Array.isArray(selectedTab.payments)){
             selectedTab.payments.filter((payment)=>{
-                if(payment.id == params.id){
+                if(parseFloat(payment.id) === parseFloat(params.id)){
                     let dateO = new Date(payment.created_at);
                     let timeO = new Date(payment.created_at);
                     setForm({
@@ -47,13 +32,13 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                         minute: '2-digit' }).toString(),
                     })
                     setAllUsers(payment.users)
-                    setSelectedUser(payment.user)
                     setPaymentDebts(payment.debts)
                 }
+                return null
             })
         }
         },
-    [selectedTab])
+    [selectedTab, params.id])
 
     //SETTING THE DEBTS
 
@@ -61,11 +46,13 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         let newDebts = [];
         paymentDebts.map((debt) => {
           allUsers.map((user) => {
-            if (debt.user_id == user.id) {
+            if (parseFloat(debt.user_id) === parseFloat(user.id)) {
             newDebts.push({ id: debt.id,user_name: user.name, user_id: 
             user.id, amount: debt.amount, payment_id: debt.payment_id });
             }
+            return null
           });
+          return null
         });
         setDebts(newDebts);
       }, [allUsers, paymentDebts]);
@@ -74,7 +61,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
     function handleDebtsChange(e) {
         let newDebts = debts.map((debt) => {
-          if (debt.id == e.target.id) {
+          if (parseFloat(debt.id) === parseFloat(e.target.id)) {
             return { ...debt, amount: e.target.value };
           } else {
             return debt;
@@ -201,16 +188,17 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                                 {
                                     Object.values(EMOJIS).map((emoji) => 
                                         {
-                                            let value;
-                                            Object.keys(EMOJIS).find((key) => {
-                                                if (EMOJIS[key] === emoji) {
-                                                value = key;
+                                        let value;
+                                        Object.keys(EMOJIS).find((key) => {
+                                            if (EMOJIS[key] === emoji) {
+                                            value = key;
                                         }
+                                        return null
                                     });
                                     return (
                                     <label className="checkbox-with-emoji" key=
                                     {emoji}>
-                                    {form.category == value ?
+                                    {form.category === value ?
                                     <input
                                     type="checkbox"
                                     name="category"

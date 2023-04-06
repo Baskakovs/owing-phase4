@@ -1,7 +1,6 @@
 import MoneysInput from "./MoneysInput";
 import ErrorsDisplay from "./ErrorsDisplay";
 import React, {useState, useEffect} from "react"
-import {useParams} from "react-router-dom"
 import { useHistory } from 'react-router-dom';
 
 function EditPayment({selectedTab, handleNewPayment}){
@@ -9,14 +8,14 @@ function EditPayment({selectedTab, handleNewPayment}){
     const [debts, setDebts] = useState("")
 
     const {users} = selectedTab
-    let debtUserList = []
     useEffect(()=>{
+        let debtUserList = []
         users.map((user)=>{
-            debtUserList.push({user_id: user.id, user_name: user.name, amount: 
+            return debtUserList.push({user_id: user.id, user_name: user.name, amount: 
             0.0})
         })
         setDebts(debtUserList)
-    }, [])
+    }, [users])
 
     const [form, setForm] = useState({user_id: String(selectedTab.users[0].id), 
     tab_id: selectedTab.id})
@@ -25,7 +24,7 @@ function EditPayment({selectedTab, handleNewPayment}){
 
     function handleDebtsChange(e) {
         let newDebts = debts.map((debt) => {
-          if (debt.user_id == e.target.id) {
+          if (parseFloat(debt.user_id) === parseFloat(e.target.id)) {
             return { ...debt, amount: e.target.value };
           } else {
             return debt;
@@ -53,17 +52,6 @@ function EditPayment({selectedTab, handleNewPayment}){
 
     const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", 
     taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
-
-    function handleDebts(e){
-        let newDebts = debts.map((debt)=>{
-            if(debt.user_id == e.target.id){
-                return {...debt, amount: e.target.value}
-            }else{
-                return debt
-            }
-        })
-        setDebts(newDebts)
-    }
 
     function handleSplitEqually(e){
         e.preventDefault()
@@ -166,16 +154,17 @@ function EditPayment({selectedTab, handleNewPayment}){
                             {
                                 Object.values(EMOJIS).map((emoji) => 
                                     {
-                                        let value;
-                                        Object.keys(EMOJIS).find((key) => {
-                                            if (EMOJIS[key] === emoji) {
-                                            value = key;
+                                    let value;
+                                    Object.keys(EMOJIS).find((key) => {
+                                    if (EMOJIS[key] === emoji) {
+                                        value = key;
                                     }
+                                    return null
                                 });
                                 return (
                                 <label className="checkbox-with-emoji" key=
                                 {emoji}>
-                                {form.category == value ?
+                                {form.category === value ?
                                 <input
                                 type="checkbox"
                                 name="category"

@@ -1,6 +1,6 @@
 //Importing dependencies
 import React, {useState, useEffect, createContext} from 'react';
-import {BrowserRouter, Switch, Route, useHistory} from "react-router-dom";
+import {BrowserRouter, Switch, Route} from "react-router-dom";
 //Importing components
 import './App.css';
 import Login from './Components/Login';
@@ -15,8 +15,6 @@ export const LoginContext = createContext()
 export const TabContext = createContext()
 
 function App() {
-
-const history = useHistory()
 
 //USER AUTHENTIACTION AND LOGIN
 //=============================
@@ -66,8 +64,9 @@ useEffect(() => {
   if(Array.isArray(data)){
     data.filter((tabs)=>{
       if(tabs.id === selectedTab || tabs.id === selectedTab.id){
-          setSelectedTab(tabs)
+        setSelectedTab(tabs)
       }
+      return null
   })
   }
 }, [data, selectedTab])
@@ -120,6 +119,7 @@ function handleUpdateTab(res){
       if(user.id === res.user_id){
         return user
       }
+      return null
     })
     return newUser[0]
   }
@@ -143,6 +143,7 @@ function handleUpdateTab(res){
           if(payment.id !== payment_id){
             return payment
           }
+          return null
         })
         return {...tab, payments: newPaymentList};
       }

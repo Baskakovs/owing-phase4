@@ -33,7 +33,7 @@ function Login(){
                 </div>
             </div>
             <div className="m-a">
-                <img src={duck}/>
+                <img src={duck} alt={"McDuck"}/>
             </div>
         </div>
     )
