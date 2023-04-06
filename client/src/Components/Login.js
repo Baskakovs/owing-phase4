@@ -1,11 +1,11 @@
 import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
-import duck from './duck.webp'
+import duck from '../duck.webp'
 import React, {useState, useEffect} from 'react'
 
 function Login(){
 
-    const [errors, setErrors] = useState([])
+    const [errors, setErrors] = useState([])//errors from the front-end and the back-end from the login and signup forms
     const [login, setLogin] = useState(true)
 
     useEffect(()=>{setErrors()},[login])

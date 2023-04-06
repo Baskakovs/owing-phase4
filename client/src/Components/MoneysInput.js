@@ -12,8 +12,8 @@ function MoneysInput({onChange, value, name, id}){
       return (
         <div class="currency-wrap">
             <span class="currency-code">$</span>
-            <input type="number" id={id} class="text-currency" name={name} value=
-            {value} onChange={handleInputChange} />
+            <input type="number" id={id} class="text-currency" name={name} 
+            value={value} onChange={handleInputChange} />
         </div>
       );
 }

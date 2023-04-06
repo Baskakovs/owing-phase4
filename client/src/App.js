@@ -1,18 +1,26 @@
-import React, {useState, useEffect, createContext, useContext} from 'react';
-import './App.css';
-import Login from './Login';
-import Tab from './Tab';
-import EditPayment from './EditPayment';
-import NewPayment from './NewPayment';
-import NewTab from './NewTab';
-import Nav from './Nav';
+//Importing dependencies
+import React, {useState, useEffect, createContext} from 'react';
 import {BrowserRouter, Switch, Route, useHistory} from "react-router-dom";
+//Importing components
+import './App.css';
+import Login from './Components/Login';
+import Tab from './Components/Tab';
+import EditPayment from './Components/EditPayment';
+import NewPayment from './Components/NewPayment';
+import NewTab from './Components/NewTab';
+import Nav from './Components/Nav';
+
+//Setting up the context to be used in the code below
 export const LoginContext = createContext()
 export const TabContext = createContext()
 
 function App() {
-const [currentUser, setCurrentUser] = useState("")
 
+const history = useHistory()
+
+//USER AUTHENTIACTION AND LOGIN
+//=============================
+const [currentUser, setCurrentUser] = useState("")
 
 useEffect(() => {
   fetch('/auth')
@@ -23,12 +31,26 @@ useEffect(() => {
     });
 }, []);
 
+//Handling Logout
+function handleLogout(){
+  fetch(`/logout`,{
+    method: "DELETE",
+  })
+  .then((res)=>{
+    if(res.ok){
+        setCurrentUser(null)
+    }
+  })
+}
+
 //SET DATA FOR THE TAB.JS COMPONENT TAB LIST AND SELECTED TAB. ADDITIONALLY SET THE TRANSITION LEFT STATE TO TRUE ON THE TAB.JS COMPONENT
+//=============================================================================
 
 const [left, setLeft] = useState(false)
 const [data, setData] = useState({})
 const [selectedTab, setSelectedTab] = useState("")
 
+//Fetching the data from the backend
 useEffect(() => {
     fetch("/tabs")
     .then( res =>{
@@ -39,16 +61,18 @@ useEffect(() => {
 
 },[currentUser])
 
+//When a tab is selected in TabList component, filter through all tabs to find the corrent one.
 useEffect(() => {
   if(Array.isArray(data)){
     data.filter((tabs)=>{
-      if(tabs.id == selectedTab || tabs.id == selectedTab.id){
+      if(tabs.id === selectedTab || tabs.id === selectedTab.id){
           setSelectedTab(tabs)
       }
   })
   }
 }, [data, selectedTab])
 
+//Setting "left" state true or false to manipulate split screen display
 function handleTransitionLeft(id){
   setLeft(!left)
   setSelectedTab(id)
@@ -58,7 +82,10 @@ function handleClose(){
   setLeft(false)
 }
 
+//UPDATING CRUD ACTIONS ON THE FRONT-END
+//======================================
 
+//Handling Tab update on the front-end
 function handleUpdateTab(res){
   const newData = data.map((tab)=>{
     if(tab.id === res.tab_id){
@@ -87,19 +114,19 @@ function handleUpdateTab(res){
   })
   setData(newData)
   }
-
+  //Handling Tab delete on the front-end
   function findNewPayer(res, tab){
     let newUser = tab.users.filter((user)=>{
-      if(user.id == res.user_id){
+      if(user.id === res.user_id){
         return user
       }
     })
     return newUser[0]
   }
-
+  //Handling new Payment on the front-end
   function handleNewPayment(res){
     const newData = data.map((tab)=>{
-      if(res.id == tab.id){
+      if(res.id === tab.id){
         return res 
       }else{
         return tab
@@ -108,11 +135,12 @@ function handleUpdateTab(res){
     setData(newData)
   }
 
+  //Hadling Payment delete on the front-end
   function handleDeletePayment(payment_id, tab_id){
     setData(prevData => prevData.map((tab)=>{
-      if(tab.id == tab_id){
+      if(tab.id === tab_id){
         const newPaymentList =  tab.payments.filter((payment)=>{
-          if(payment.id != payment_id){
+          if(payment.id !== payment_id){
             return payment
           }
         })
@@ -122,27 +150,16 @@ function handleUpdateTab(res){
     }));
   }
 
-  const history = useHistory()
-
-  function handleLogout(){
-    fetch(`/logout`,{
-      method: "DELETE",
-    })
-    .then((res)=>{
-      if(res.ok){
-          setCurrentUser(null)
-      }
-    })
-  }
-
+  //Handling new Tab on the front-end
   function handleNewTab(res){
     setData([...data, res])
   }
-    if(!currentUser) return <div className={"align-content-center"}>
-      <LoginContext.Provider value={{setCurrentUser}}>
-        <Login setCurrentUser={setCurrentUser}/>
-      </LoginContext.Provider>
-    </div>
+
+  if(!currentUser) return <div className={"align-content-center"}>
+<LoginContext.Provider value={{setCurrentUser}}>
+  <Login setCurrentUser={setCurrentUser}/>
+</LoginContext.Provider>
+</div>
 
   return (
     <>

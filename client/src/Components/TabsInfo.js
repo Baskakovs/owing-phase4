@@ -1,13 +1,14 @@
-import TabsInfoCard from "./TabsInfoCard"
+//Importing dependencies
 import { NavLink } from "react-router-dom"
-import { TabContext } from "./App"
+import { TabContext } from "../App"
 import { useContext } from "react"
-function TabsInfo(){
+//Importing components
+import TabsInfoCard from "./TabsInfoCard"
 
+function TabsInfo(){
+    
     const {handleClose, selectedTab, left} = useContext(TabContext)
     const {payments, name} = selectedTab
-
-    console.log(selectedTab, "selectedTab")
 
     return(
         <div className={left ? "container-tabs-half-right justify-content-center" : "display-none"}>

@@ -1,12 +1,13 @@
+//Importing dependencies
 import TabCard from "./TabCard"
+//Improting components
 import React, {useContext} from "react"
-import {TabContext} from "./App"
+import {TabContext} from "../App"
 import {NavLink} from "react-router-dom"
 
 function Tabs(){
 
-    const {handleTransitionLeft, data, left} = 
-    useContext(TabContext)
+    const {handleTransitionLeft, data, left} = useContext(TabContext)
 
     return(
         <div className={left ? "container-tabs-half" : "container-tabs"}>

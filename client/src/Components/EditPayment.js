@@ -240,7 +240,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                                     Array.isArray(debts) ? debts.map((debt) => 
                                     {
                                         return (
-                                            <div class="input-wrapper">
+                                            <div className="input-wrapper">
                                             <label for="amountInput">
                                                 {debt.user_name}
                                             </label>

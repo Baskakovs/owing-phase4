@@ -1,9 +1,12 @@
+//Importing dependencies
 import React, {useState, useContext} from 'react';
-import { LoginContext } from './App';
+import { LoginContext } from '../App';
 function LoginForm({setErrors}){
 
     const {setCurrentUser} = useContext(LoginContext)
     
+    //HANDLING FORM INPUTS
+    //====================
     const [loginForm, setLoginForm] = useState({
         email: "",
         password: "",
@@ -19,6 +22,8 @@ function LoginForm({setErrors}){
         
     }
 
+    //SUBMITTING THE FORM TO THE BACKEND
+    //==================================
     function handleSubmit(e){
         e.preventDefault()
         fetch('/login',{

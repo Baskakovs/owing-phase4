@@ -1,6 +1,8 @@
-import ErrorsDisplay from "./ErrorsDisplay"
+//Importing dependencies
 import { useHistory } from "react-router-dom"
 import { useState } from "react"
+//Importing components
+import ErrorsDisplay from "./ErrorsDisplay"
 
 function NewTab({handleNewTab}){
     const history = useHistory()
@@ -8,6 +10,8 @@ function NewTab({handleNewTab}){
         history.goBack()
     }
 
+    //HANDLING FORM INPUTS
+    //====================
     const [form, setForm] = useState({
         name: "",
         user1: "",
@@ -24,8 +28,11 @@ function NewTab({handleNewTab}){
         })
     }
 
+    //Setting the errors
     const [errors, setErrors] = useState([])
 
+    //SUBMITTING THE FORM TO THE BACKEND
+    //==================================
     function handleSubmit(e){
         e.preventDefault()
         fetch(`/tabs`,{

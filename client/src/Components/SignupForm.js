@@ -1,17 +1,19 @@
+//Importing dependencies
 import React, {useState, useContext} from 'react'
-import {LoginContext} from './App'
+import {LoginContext} from '../App'
 function SignupForm({setErrors}){
 
-    const setCurrentUser = useContext(LoginContext)
+    const setCurrentUser = useContext(LoginContext
+        )
 
+    //HANDLING FORM INPUTS
+    //====================
     const [signUpForm, setSignUpForm] = useState({
         email: "",
         name: "",
         password: "",
         confirmPassword: ""
     })
-
-
 
     function handleChange(e){
         e.preventDefault()
@@ -23,8 +25,9 @@ function SignupForm({setErrors}){
         setErrors([])
     }
 
+    //SUBMITTING SIGNUP TO THE BACK-END
+    //=================================
     let validity = true
-
     function handleSubmit(e){
         e.preventDefault()
         validateInputs()
@@ -44,12 +47,11 @@ function SignupForm({setErrors}){
         }
     }
 
+    //Validating Inputs
     function validateInputs(){
         let errors = []
-        
         //Validate password
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
-
         if(!passwordRegex.test(signUpForm.password)){
             errors.push("Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character")
             validity = false
@@ -58,7 +60,6 @@ function SignupForm({setErrors}){
             errors.push("Passwords do not match")
             validity = false
         }
-
         setErrors(errors)
     }
 
