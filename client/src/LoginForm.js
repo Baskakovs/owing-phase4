@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-function LoginForm({setCurrentUser}){
+function LoginForm({setCurrentUser, setErrors}){
     
     const [loginForm, setLoginForm] = useState({
         email: "",
@@ -26,6 +26,8 @@ function LoginForm({setCurrentUser}){
         .then(res => {
             if(res.ok){
                 res.json().then(user => setCurrentUser(user))
+            }else{
+                res.json().then(e => setErrors([e.error]))
             }
         })
     }

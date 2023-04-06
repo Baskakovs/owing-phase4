@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-function SignupForm({setCurrentUser}){
+function SignupForm({setCurrentUser, setErrors}){
 
     console.log(setCurrentUser)
 
@@ -7,10 +7,10 @@ function SignupForm({setCurrentUser}){
         email: "",
         name: "",
         password: "",
-        // confirmPassword: ""
+        confirmPassword: ""
     })
 
-    const [errors, setErrors] = useState([])
+    // const [errors, setErrors] = useState([])
 
     function handleChange(e){
         e.preventDefault()
@@ -19,22 +19,46 @@ function SignupForm({setCurrentUser}){
         setSignUpForm({
             ...signUpForm, [name]: value
         })
+        setErrors([])
     }
+
+    let validity = true
 
     function handleSubmit(e){
         e.preventDefault()
-        fetch('/users',{
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(signUpForm)
-        })
-        .then(res => {
-            if(res.ok){
-                res.json().then(user => setCurrentUser(user))
-            }else{
-                res.json().then(errors => setErrors(errors.errors))
-            }
-        })
+        validateInputs()
+        if(validity){
+            fetch('/users',{
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(signUpForm)
+            })
+            .then(res => {
+                if(res.ok){
+                    res.json().then(user => setCurrentUser(user))
+                }else{
+                    res.json().then(e =>setErrors(e.errors))
+                }
+            })
+        }
+    }
+
+    function validateInputs(){
+        let errors = []
+        
+        //Validate password
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
+        if(!passwordRegex.test(signUpForm.password)){
+            errors.push("Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character")
+            validity = false
+        }
+        if(signUpForm.password !== signUpForm.confirmPassword){
+            errors.push("Passwords do not match")
+            validity = false
+        }
+
+        setErrors(errors)
     }
 
     return(

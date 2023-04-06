@@ -35,7 +35,7 @@ useEffect(() => {
         }
     })
 
-}, [])
+}, [currentUser])
 
 useEffect(() => {
   if(Array.isArray(data)){
@@ -134,6 +134,11 @@ function handleUpdateTab(res){
     })
   }
 
+  function handleNewTab(res){
+    setData([...data, res])
+  }
+
+
 if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
 
   return (
@@ -156,7 +161,7 @@ if(!currentUser) return <div className={"align-content-center"}><Login setCurren
           {handleUpdateTab} handleNewPayment={handleNewPayment}/>
         </Route>
         <Route path="/new_tab">
-          <NewTab/>
+          <NewTab handleNewTab={handleNewTab}/>
         </Route>
         <Route path="/login">
           <Login setCurrentUser={setCurrentUser}/>

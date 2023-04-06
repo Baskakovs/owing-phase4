@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom"
-import { useState, useEffect } from "react"
-import MoneysInput from "./MoneysInput";
-function NewTab(){
+import { useState } from "react"
+
+function NewTab({handleNewTab}){
     const history = useHistory()
     function goBack(){
         history.goBack()
@@ -32,6 +32,14 @@ function NewTab(){
             method: "POST",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(form)
+        })
+        .then((res)=>{
+            if(res.ok){
+                res.json().then((data)=>{
+                    handleNewTab(data)
+                    history.push(`/`)
+                })
+            }
         })
     }
 

@@ -6,7 +6,10 @@ class TabsController < ApplicationController
 
     def create
         tab = Tab.create(name: params[:description])
+        joinut = Joinut.create(user_id: session[:user_id], tab_id: tab.id)
         create_users(tab.id)
+        render json: tab, include: { payments: { include: [:user, :users, 
+        :debts] }, users: {} }
     end
       
     private
