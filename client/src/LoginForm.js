@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
-function LoginForm({setCurrentUser, setErrors}){
+import React, {useState, useContext} from 'react';
+import { LoginContext } from './App';
+function LoginForm({setErrors}){
+
+    const {setCurrentUser} = useContext(LoginContext)
     
     const [loginForm, setLoginForm] = useState({
         email: "",

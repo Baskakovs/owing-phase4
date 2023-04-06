@@ -57,7 +57,7 @@ function NewTab({handleNewTab}){
                         <h4>Send invitations to join the tab</h4>
                         <label>User 1</label>
                         <div className="container position-relative">
-                            <input type="email" id={"inputLabel"} name={"user1"} value={form.user1} onChange={handleChange} placeholder={"Email..."}/>
+                            <input  id={"inputLabel"} name={"user1"} value={form.user1} onChange={handleChange} placeholder={"Email..."}/>
                         </div>
                         <label>User 2</label>
                         <div className="container position-relative">

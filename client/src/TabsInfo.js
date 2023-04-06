@@ -1,13 +1,18 @@
 import TabsInfoCard from "./TabsInfoCard"
 import { NavLink } from "react-router-dom"
-function TabsInfo({onClose, left, selectedTab}){
+import { TabContext } from "./App"
+import { useContext } from "react"
+function TabsInfo(){
 
-const {payments} = selectedTab
+    const {handleClose, selectedTab, left} = useContext(TabContext)
+    const {payments, name} = selectedTab
+
+    console.log(selectedTab, "selectedTab")
 
     return(
         <div className={left ? "container-tabs-half-right justify-content-center" : "display-none"}>
-            <button onClick={onClose} className="btn-close"></button>
-            <div className="h-a"><h1 className="text-center">Greece Vacation 2023</h1></div>
+            <button onClick={handleClose} className="btn-close"></button>
+            <div className="h-a"><h1 className="text-center">{name}</h1></div>
             {
                 Array.isArray(payments) ? payments.map(payment => <TabsInfoCard key={payment.id} selectedTab={payment}/>) : null
             }

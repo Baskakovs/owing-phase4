@@ -1,16 +1,20 @@
 import TabCard from "./TabCard"
-
-import React, {useState} from "react"
+import React, {useContext} from "react"
+import {TabContext} from "./App"
 import {NavLink} from "react-router-dom"
 
-function Tabs({handleTransitionLeft, left, tabList}){
+function Tabs(){
+
+    const {handleTransitionLeft, data, left} = 
+    useContext(TabContext)
 
     return(
         <div className={left ? "container-tabs-half" : "container-tabs"}>
             <h1 className="text-center">Tabs</h1>
             <div>
                 {
-                    Array.isArray(tabList) ? tabList.map(tab => <TabCard onTransitionLeft={handleTransitionLeft} key={tab.id} tab={tab}/>) : null
+                    Array.isArray(data) ? data.map(tab => <TabCard 
+                    handleTransitionLeft={handleTransitionLeft} key={tab.id} tab={tab}/>) : null
                 }
                 <NavLink to={`/new_tab`}>
                     <div className="text-center">

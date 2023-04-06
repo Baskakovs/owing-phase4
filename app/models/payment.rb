@@ -8,4 +8,13 @@ class Payment < ApplicationRecord
 
     #Validations
     validates :description, presence: true
+
+    def debts_add_up?
+        if self.debts.sum(:amount) != self.amount
+            self.errors.add(:amount, "the debts need to add up to the total")
+            false
+        else
+            true
+        end
+    end
 end

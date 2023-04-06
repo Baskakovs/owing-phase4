@@ -156,9 +156,12 @@ select{
   background-color: transparent;
   border: none;
   background-image: url("./close.png") ;
+  opacity: 0.4;
   background-repeat: no-repeat;
-  background-size: 30px;
+  background-size: 25px;
   cursor: pointer;
+  margin-top: 30px;
+  margin-left: 30px;
 }
 
 .btn-split{
@@ -216,8 +219,17 @@ img{
   grid-template-rows: max-content;
 }
 
+
 .justify-content-end{
   justify-content: end;
+}
+
+.justify-content-start{
+  justify-content: start;
+}
+
+.text-align-start{
+  text-align: start;
 }
 
 .height-100{
@@ -277,6 +289,7 @@ img{
   margin: auto;
 }
 
+
 .ms-3{
   margin-right: 100px;
 }
@@ -291,6 +304,10 @@ img{
 
 .mt-7{
   margin-top: 7px;
+}
+
+.mt-15{
+  margin-top: 15px;
 }
 
 .m-5{
@@ -365,13 +382,16 @@ img{
 border: none;
 font-size: 26px;
 font-weight: bold;
-width: 100%;
 margin-bottom: 12px;
+width: 100%;
+
 }
 
 .payment-title:focus{
   outline: none
 }
+
+
  
 .nav-link{
   color: #000;
@@ -402,23 +422,42 @@ margin-bottom: 12px;
   background-color: rgba(255, 0, 0, 0.4);;
   padding: 10px 0px 10px;
   border-radius: 6px;
-  margin-top: 15px;
   color: #000;
-  text-align: start;
   display: flex;
   margin: auto;
   margin-top: 20px;
 }
 
 .errors-list{
-  display: flex;
   list-style-type: none;
-  padding: 0;
 }
 
-.errors-list-item{
-  flex-grow: 1;
+/*Nav Bar*/
+
+.ul-nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+  overflow: hidden;
+  background-color: #333;
 }
+
+.nav-li {
+  float: right;
+}
+
+li button {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.nav-li button:hover:not(.active) {
+  background-color: #111;
+}
+
 
 
 

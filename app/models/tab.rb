@@ -8,5 +8,4 @@ class Tab < ApplicationRecord
 
     #Validations
     validates :name, presence: { message: "Tab name cannot be blank" }
-
 end

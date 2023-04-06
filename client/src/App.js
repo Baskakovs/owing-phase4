@@ -1,14 +1,16 @@
-import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
+import React, {useState, useEffect, createContext, useContext} from 'react';
 import './App.css';
 import Login from './Login';
 import Tab from './Tab';
 import EditPayment from './EditPayment';
 import NewPayment from './NewPayment';
 import NewTab from './NewTab';
+import Nav from './Nav';
 import {BrowserRouter, Switch, Route, useHistory} from "react-router-dom";
-function App() {
+export const LoginContext = createContext()
+export const TabContext = createContext()
 
+function App() {
 const [currentUser, setCurrentUser] = useState("")
 
 
@@ -35,7 +37,7 @@ useEffect(() => {
         }
     })
 
-}, [currentUser])
+},[currentUser])
 
 useEffect(() => {
   if(Array.isArray(data)){
@@ -55,6 +57,7 @@ function handleTransitionLeft(id){
 function handleClose(){
   setLeft(false)
 }
+
 
 function handleUpdateTab(res){
   const newData = data.map((tab)=>{
@@ -95,7 +98,6 @@ function handleUpdateTab(res){
   }
 
   function handleNewPayment(res){
-    console.log(res, "res")
     const newData = data.map((tab)=>{
       if(res.id == tab.id){
         return res 
@@ -107,7 +109,6 @@ function handleUpdateTab(res){
   }
 
   function handleDeletePayment(payment_id, tab_id){
-    console.log(payment_id, tab_id, "payment_id, tab_id")
     setData(prevData => prevData.map((tab)=>{
       if(tab.id == tab_id){
         const newPaymentList =  tab.payments.filter((payment)=>{
@@ -137,20 +138,23 @@ function handleUpdateTab(res){
   function handleNewTab(res){
     setData([...data, res])
   }
-
-
-if(!currentUser) return <div className={"align-content-center"}><Login setCurrentUser={setCurrentUser}/></div>
+    if(!currentUser) return <div className={"align-content-center"}>
+      <LoginContext.Provider value={{setCurrentUser}}>
+        <Login setCurrentUser={setCurrentUser}/>
+      </LoginContext.Provider>
+    </div>
 
   return (
     <>
-    <div className=" align-content-center">
+    <div className="align-content-center">
     <BrowserRouter>
-      <button onClick={handleLogout}>Logout</button>
+      <Nav handleLogout={handleLogout}/>
       <Switch>
         <Route exact path="/">
-          <Tab tabList={data} handleTransitionLeft={handleTransitionLeft} 
-          left={left} selectedTab={selectedTab} setSelectedTab={setSelectedTab} 
-          handleClose={handleClose}/>
+          <TabContext.Provider value={{handleTransitionLeft, left, data, 
+            handleClose, selectedTab, setSelectedTab}}>
+            <Tab left={left}/>
+          </TabContext.Provider>
         </Route>
         <Route path="/payment/:id">
           <EditPayment selectedTab={selectedTab} handleUpdateTab=

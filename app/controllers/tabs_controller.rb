@@ -5,14 +5,13 @@ class TabsController < ApplicationController
     end
 
     def create
-        tab = Tab.create(name: params[:name])
-        joinut = Joinut.create(user_id: session[:user_id], tab_id: tab.id)
-        create_users(tab.id)
-        if tab.valid? && joinut.valid? && create_users(tab.id)
-            render json: tab, include: { payments: { include: [:user, :users, 
+        @tab = Tab.create(name: params[:name])
+        joinut = Joinut.create(user_id: session[:user_id], tab_id: @tab.id)
+        if @tab.valid? && joinut.valid? && create_users(@tab.id) == true
+            render json: @tab, include: { payments: { include: [:user, :users, 
             :debts] }, users: {} }, status: :created
         else
-            render json: { errors: tab.errors.full_messages }, status: 
+            render json: { errors: @tab.errors.full_messages }, status: 
             :not_acceptable
         end
     end
@@ -26,7 +25,12 @@ class TabsController < ApplicationController
             if value.length > 0
                 user = AUser.create(email: value)
                 joinaut = Joinaut.create(a_user_id: user.id, tab_id: tab_id)
+                if !user.valid? || !joinaut.valid?
+                    error = @tab.errors.add(:base, "All emails must be valid")
+                    return false
+                end
             end
         end
+        true
     end
 end

@@ -6,13 +6,18 @@ import { useHistory } from 'react-router-dom';
 
 function EditPayment({selectedTab, handleNewPayment}){
 
+    const [debts, setDebts] = useState("")
+
     const {users} = selectedTab
     let debtUserList = []
-    users.map((user)=>{
-        debtUserList.push({user_id: user.id, user_name: user.name, amount: 0.0})
-    })
-    const [debts, setDebts] = useState(debtUserList)
-    const params = useParams(debtUserList)
+    useEffect(()=>{
+        users.map((user)=>{
+            debtUserList.push({user_id: user.id, user_name: user.name, amount: 
+            0.0})
+        })
+        setDebts(debtUserList)
+    }, [])
+
     const [form, setForm] = useState({user_id: String(selectedTab.users[0].id), 
     tab_id: selectedTab.id})
 
@@ -85,7 +90,8 @@ function EditPayment({selectedTab, handleNewPayment}){
                     res.json().then(data=>{
                         handleNewPayment(data)
                         history.push('/')
-                    })
+                    }
+                    )
                 }else{
                     res.json().then((e)=>{ setErrors(e.errors)})
                 }
@@ -223,4 +229,3 @@ function EditPayment({selectedTab, handleNewPayment}){
     )
 }
 export default EditPayment
-

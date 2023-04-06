@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
-function SignupForm({setCurrentUser, setErrors}){
+import React, {useState, useContext} from 'react'
+import {LoginContext} from './App'
+function SignupForm({setErrors}){
 
-    console.log(setCurrentUser)
+    const setCurrentUser = useContext(LoginContext)
 
     const [signUpForm, setSignUpForm] = useState({
         email: "",
@@ -10,7 +11,7 @@ function SignupForm({setCurrentUser, setErrors}){
         confirmPassword: ""
     })
 
-    // const [errors, setErrors] = useState([])
+
 
     function handleChange(e){
         e.preventDefault()
