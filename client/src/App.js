@@ -87,9 +87,9 @@ function handleClose(){
 //Handling Tab update on the front-end
 function handleUpdateTab(res){
   const newData = data.map((tab)=>{
-    if(tab.id === res.tab_id){
+    if(parseInt(tab.id) === parseInt(res.tab_id)){
       const newPayments = tab.payments.map((payment)=>{
-        if(payment.id === res.id){
+        if(parseInt(payment.id) === parseInt(res.id)){
           return {
             ...payment,
             amount: res.amount,
@@ -137,7 +137,6 @@ function handleUpdateTab(res){
 
   //Hadling Payment delete on the front-end
   function handleDeletePayment(payment_id, tab_id){
-    console.log("hello")
     setData(data => data.map((tab)=>{
       if(tab.id === tab_id){
         const newPaymentList =  tab.payments.filter((payment)=>{
@@ -176,8 +175,9 @@ function handleUpdateTab(res){
           </TabContext.Provider>
         </Route>
         <Route path="/payment/:id">
-          <EditPayment selectedTab={selectedTab} handleUpdateTab=
-          {handleUpdateTab} handleDeletePayment={handleDeletePayment}/>
+          <EditPayment selectedTab={selectedTab} 
+          handleUpdateTab={handleUpdateTab} 
+          handleDeletePayment={handleDeletePayment}/>
         </Route>
         <Route path="/new_payment">
           <NewPayment selectedTab={selectedTab} handleUpdateTab=

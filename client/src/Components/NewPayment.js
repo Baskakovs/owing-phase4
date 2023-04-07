@@ -9,8 +9,10 @@ import Categories from "./Categories";
 function EditPayment({selectedTab, handleNewPayment}){
 
     const [debts, setDebts] = useState()
-
     const {users} = selectedTab
+
+    //SETTING THE DEBTS STATE
+    //=======================
     useEffect(()=>{
         let debtUserList = []
         users.map((user)=>{
@@ -23,6 +25,7 @@ function EditPayment({selectedTab, handleNewPayment}){
     tab_id: selectedTab.id})
 
     //HANDLING THE DEBTS
+    //==================
 
     function handleDebtsChange(e) {
         let newDebts = debts.map((debt) => {
@@ -36,6 +39,7 @@ function EditPayment({selectedTab, handleNewPayment}){
       }
 
     //HANDLING THE FORM INPUTS
+    //========================
 
     function handleChange(e){
         let name = e.target.name
@@ -59,6 +63,7 @@ function EditPayment({selectedTab, handleNewPayment}){
     }
 
     //HANDLING THE SUBMIT
+    //===================
 
     const [errors, setErrors] = useState([])
 
@@ -84,7 +89,7 @@ function EditPayment({selectedTab, handleNewPayment}){
         }
     }
 
-    //CONVERTING THE FORM
+    //Converting the form data to the format that the backend is expecting
 
     function bodyConvert(){
         if(form.date !== undefined && form.time !== undefined){

@@ -9,6 +9,7 @@ import Categories from "./Categories";
 function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
     //FILTEREING OUT THE RIGHT PAYMENT FROM THE SELECTED TAB DATA
+    //===========================================================
 
     const params = useParams()
     const [form, setForm] = useState("")
@@ -43,7 +44,18 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         },
     [selectedTab, params.id])
 
+    //HANDLING THE FORM INPUTS
+    //========================
+
+    function handleChange(e){
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
     //SETTING THE DEBTS
+    //=================
 
     useEffect(() => {
         let newDebts = [];
@@ -61,6 +73,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
       }, [allUsers, paymentDebts]);
 
     //HANDLING THE DEBTS
+    //==================
 
     function handleDebtsChange(e) {
         let newDebts = debts.map((debt) => {
@@ -73,16 +86,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         setDebts(newDebts);
       }
 
-    //HANDLING THE FORM INPUTS
-
-    function handleChange(e){
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    //CONVERTING THE FORM
+    //Converting the data to the format the backend is expecting
 
     function bodyConvert(){
         //converting the time back to ISO
@@ -94,7 +98,8 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         form.debts = debts
     }
 
-
+    //HANDLING THE SPLIT EQUALLY
+    //==========================
     function handleSplitEqually(e){
         e.preventDefault()
         let newDebts = debts.map((debt)=>{
@@ -104,6 +109,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
     }
 
     //HANDLING THE UPDATE
+    //===================
 
     const [errors, setErrors] = useState([])
 
@@ -128,6 +134,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
     }
 
     //HANDLING THE DELETE
+    //===================
 
     function onhandleDeletePayment(e){
         e.preventDefault()

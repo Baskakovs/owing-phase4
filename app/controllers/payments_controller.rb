@@ -3,7 +3,6 @@ rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
 def create
     payment = Payment.create(params_payment)
-    #check if debts add up
     if payment.debts_add_up?(params[:amount], params[:debts]) && payment.valid?
         create_debts(payment)
         tab = Tab.find(params[:tab_id])
@@ -21,8 +20,8 @@ def update
     if payment.debts_add_up?(params[:amount], params[:debts]) && payment.valid?
         debts_update(payment)
         tab = Tab.find(params[:tab_id])
-        render json: tab, include: { payments: { include: [:user, :users, 
-        :debts] }, users: {} }, status: :accepted
+        render json: payment, include: [:user, :users, :debts], status: 
+        :accepted
     else
         unprocessable_entity(payment)
     end
