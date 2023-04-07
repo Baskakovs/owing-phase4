@@ -137,7 +137,8 @@ function handleUpdateTab(res){
 
   //Hadling Payment delete on the front-end
   function handleDeletePayment(payment_id, tab_id){
-    setData(prevData => prevData.map((tab)=>{
+    console.log("hello")
+    setData(data => data.map((tab)=>{
       if(tab.id === tab_id){
         const newPaymentList =  tab.payments.filter((payment)=>{
           if(payment.id !== payment_id){
@@ -158,7 +159,7 @@ function handleUpdateTab(res){
 
   if(!currentUser) return <div className={"align-content-center"}>
 <LoginContext.Provider value={{setCurrentUser}}>
-  <Login setCurrentUser={setCurrentUser}/>
+  <Login/>
 </LoginContext.Provider>
 </div>
 

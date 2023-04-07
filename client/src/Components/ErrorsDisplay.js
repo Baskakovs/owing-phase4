@@ -1,3 +1,4 @@
+import uuid from "react-uuid"
 function ErrorsDisplay({errors}){
     return (
         Array.isArray(errors) && errors.length > 0 ?
@@ -5,7 +6,7 @@ function ErrorsDisplay({errors}){
             <div className='login-error-box w-366 m-a'>
                 <ul className='errors-list'>{Array.isArray(errors) ? 
                 errors.map((error)=>{
-                    return <li className='errors-list-item'>{error}</li>
+                    return <li className='errors-list-item' key={uuid()}>{error}</li>
                     }): null}
                 </ul> 
             </div>

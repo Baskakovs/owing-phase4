@@ -1,18 +1,20 @@
-import MoneysInput from "./MoneysInput";
-import ErrorsDisplay from "./ErrorsDisplay";
+//Importing dependencies
 import React, {useState, useEffect} from "react"
 import { useHistory } from 'react-router-dom';
+import uuid from "react-uuid";
+//Importing components
+import ErrorsDisplay from "./ErrorsDisplay";
+import Categories from "./Categories";
 
 function EditPayment({selectedTab, handleNewPayment}){
 
-    const [debts, setDebts] = useState("")
+    const [debts, setDebts] = useState()
 
     const {users} = selectedTab
     useEffect(()=>{
         let debtUserList = []
         users.map((user)=>{
-            return debtUserList.push({user_id: user.id, user_name: user.name, amount: 
-            0.0})
+            return debtUserList.push({user_id: user.id, user_name: user.name, amount: ""})
         })
         setDebts(debtUserList)
     }, [users])
@@ -47,11 +49,6 @@ function EditPayment({selectedTab, handleNewPayment}){
         if(name === "date" || name === "time" || name === "description")
         {setErrors([])}
     }
-
-    //EMOJIS
-
-    const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", 
-    taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
 
     function handleSplitEqually(e){
         e.preventDefault()
@@ -123,11 +120,10 @@ function EditPayment({selectedTab, handleNewPayment}){
             <div className="container justify-content-center">
                 <div className="container two-col col-gap-7">
                     <div>
-                    <select value={form.user_id} name={"user_id"} onChange=
-                    {handleChange}>
+                    <select value={form.user_id} name={"user_id"} onChange={handleChange}>
                         {Array.isArray(users) ? users.map((user) => {
                             return (
-                                <option value={user.id} key={user.id}>
+                                <option value={user.id} key={uuid()}>
                                     {`${user.name}`}
                                 </option>
                             )
@@ -141,49 +137,25 @@ function EditPayment({selectedTab, handleNewPayment}){
                         onChange={handleChange}/>
                         </div>
                         <div className="container two-col col-gap-7">
+                        <div className="container two-col col-gap-7">
                             <div>
-                            <MoneysInput name={"amount"} value={form.amount} 
-                                onChange={handleChange}/>
+                                <div className="currency-wrap">
+                                    <span className="currency-code">$</span>
+                                    <input className="text-currency" name={"amount"} 
+                                    value={form.amount} onChange={handleChange} />
+                                </div>
                             </div>
                             <div>
-                            <MoneysInput name={"amount"} value={form.amount} 
-                                onChange={handleChange}/>
+                                <div className="currency-wrap">
+                                    <span className="currency-code">$</span>
+                                    <input className="text-currency" name={"amount"} 
+                                    value={form.amount} onChange={handleChange} />
+                                </div>
                             </div>
-                        </div>
+                            </div>
+                            </div>
                         <div className="container four-col">
-                            {
-                                Object.values(EMOJIS).map((emoji) => 
-                                    {
-                                    let value;
-                                    Object.keys(EMOJIS).find((key) => {
-                                    if (EMOJIS[key] === emoji) {
-                                        value = key;
-                                    }
-                                    return null
-                                });
-                                return (
-                                <label className="checkbox-with-emoji" key=
-                                {emoji}>
-                                {form.category === value ?
-                                <input
-                                type="checkbox"
-                                name="category"
-                                value={value}
-                                onChange={handleChange}
-                                checked
-                                /> :
-                                <input
-                                type="checkbox"
-                                name="category"
-                                value={value}
-                                onChange={handleChange}
-                                />
-                                }
-                                <span className="checkmark">{emoji}</span>
-                                </label>
-                                );
-                                })
-                            }
+                            <Categories handleChange={handleChange} key={ uuid()} form={form}/>
                         </div>
                     </div>
                     <div className="container">
@@ -191,23 +163,33 @@ function EditPayment({selectedTab, handleNewPayment}){
                             {handleSplitEqually}>Split 
                             Equally</button>
                             {
-                                Array.isArray(debts) ? debts.map((debt) =>
-                                {
-                                    return (
-                                        <div class="input-wrapper">
-                                        <label>
-                                            {debt.user_name}
-                                        </label>
-                                            <div>
-                                                <MoneysInput id={debt.user_id} 
-                                                value={debt.amount} 
-                                                onChange={handleDebtsChange}/>
+                                    Array.isArray(debts) ? debts.map((debt) => 
+                                    {
+                                        return (
+                                            <div className="input-wrapper" key=
+                                            {debt.id}>
+                                                <label>
+                                                    {debt.user_name}
+                                                </label>
+                                                <div>
+                                                <div className="currency-wrap">
+                                                    <span 
+                                                    className="currency-code">$</span>
+                                                    <input 
+                                                    className="text-currency" 
+                                                    name={"amount"} 
+                                                    value={debt.amount} 
+                                                    id={debt.user_id}
+                                                    onChange={handleDebtsChange} 
+                                                    key={debt.id}
+                                                    />
+                                                </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                })
-                                : null
-                            }
+                                        )
+                                    })
+                                    : null
+                                }
                     </div>
                 </div>
                 <button className="btn-purple m-a mt-7">Create</button>

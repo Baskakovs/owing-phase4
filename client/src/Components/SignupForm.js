@@ -1,10 +1,10 @@
 //Importing dependencies
 import React, {useState, useContext} from 'react'
 import {LoginContext} from '../App'
+
 function SignupForm({setErrors}){
 
-    const setCurrentUser = useContext(LoginContext
-        )
+    const {setCurrentUser} = useContext(LoginContext)
 
     //HANDLING FORM INPUTS
     //====================

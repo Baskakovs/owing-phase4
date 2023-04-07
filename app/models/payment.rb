@@ -9,8 +9,8 @@ class Payment < ApplicationRecord
     #Validations
     validates :description, presence: true
 
-    def debts_add_up?
-        if self.debts.sum(:amount) != self.amount
+    def debts_add_up?(amount, debts)
+        if amount.to_f.floor != debts.map{|debt| debt[:amount].to_f}.sum.floor
             self.errors.add(:amount, "the debts need to add up to the total")
             false
         else

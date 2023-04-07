@@ -1,11 +1,11 @@
 import React from "react";
 
-function MoneysInput({onChange, value, name, id}){
+function MoneysInput({handleChange, value, name, id}){
     const handleInputChange = (e) => {
         const regex = /^[0-9.,]*$/; // regex pattern to only allow numbers
         const inputValue = e.target.value;
         if (regex.test(inputValue)) {
-          onChange(e);
+          handleChange(e);
         }
       };
     

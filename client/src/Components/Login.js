@@ -1,7 +1,10 @@
+//Importing dependencies
+import React, {useState, useEffect} from 'react'
+import uuid from 'react-uuid'
+//Importing components
 import SignupForm from './SignupForm'
 import LoginForm from './LoginForm'
 import duck from '../duck.webp'
-import React, {useState, useEffect} from 'react'
 
 function Login(){
 
@@ -23,7 +26,7 @@ function Login(){
                         Array.isArray(errors) && errors.length > 0 ?
                         <div className='login-error-box'>
                             <ul className='errors-list'>{Array.isArray(errors) ? errors.map((error)=>{
-                                return <li className='errors-list-item'>{error}</li>
+                                return <li className='errors-list-item' key={uuid()}>{error}</li>
                                 }): null}
                             </ul> 
                          </div>
