@@ -80,7 +80,7 @@ function NewTab({handleNewTab}){
                 <h4>Currencies Selection</h4>
                 <div className="container two-col col-gap-7">
                     <div>
-                        <label for="primary-currency">Primary Currency</label>
+                        <label>Primary Currency</label>
                         <select name="primary-currency">
                             <option value={"GBP"} defaultValue>GBP</option>
                             <option value={"GBP"}>EUR</option>
@@ -88,7 +88,7 @@ function NewTab({handleNewTab}){
                         </select>
                     </div>
                     <div>
-                    <label for="primary-currency">Secondary Currency</label>
+                    <label>Secondary Currency</label>
                         <select name="primary-currency">
                             <option value={"GBP"}>GBP</option>
                             <option value={"GBP"} defaultValue>EUR</option>

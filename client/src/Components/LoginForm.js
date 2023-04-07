@@ -44,7 +44,7 @@ function LoginForm({setErrors}){
         <>
         <form className={"form"} onSubmit={handleSubmit}>
             <div className="container">
-            <input type="email" onChange={handleChange} name="email" placeholder={"peter@owing.com"}/>
+            <input type="email" onChange={handleChange} name="email" placeholder={"peter@owing.com"} />
             <input type="password" onChange={handleChange} name="password" placeholder={"password"}/>
             <button type="submit" className="btn-purple mt-7">Log In</button>
             </div>

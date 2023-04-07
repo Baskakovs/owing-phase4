@@ -1,5 +1,5 @@
 //Importing dependencies
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import { useHistory } from "react-router-dom"
 
 function TabsInfoCard({selectedTab}){
@@ -24,7 +24,12 @@ function TabsInfoCard({selectedTab}){
     //==========================
     const emojis = {plane: "✈️", food: "🌮️", medicine: "💊", entertainment: "💃", taxi: "🚕", drinks: "🍺", energy: "⚡️", cash: "💵"}
 
-    const emojiCategory = useState(emojis[category])
+    const [emojiCategory, setEmojiCategory] = useState("")
+
+    useEffect(()=>{
+        setEmojiCategory(emojis[category])
+    },[category])
+
 
     //HANDLING CLICK
     //==============

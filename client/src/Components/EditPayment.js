@@ -152,22 +152,22 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         <button onClick={goBack} className="btn-close"></button>
         <div className="justify-content-center mt-15">
             <form className={"form"} onSubmit={handleUpdate}>
-                <input type="text" name={"description"} className={"payment-title"}    
-                onChange={handleChange} value={form.description}/>
+            <input type="text" name="description" className="payment-title" onChange={handleChange} value={form.description} />
                 <div className="container justify-content-center">
                     <div className="container two-col col-gap-7">
                         <div>
-                        <select value={form.user_id} name={"user_id"} onChange=
-                        {handleChange}>
-                            {Array.isArray(allUsers) ? allUsers.map((user) => {
+                            <select value={form.user_id} name={"user_id"} 
+                            onChange={handleChange}>
+                            {Array.isArray(allUsers) ? (
+                                allUsers.map((user) => {
                                 return (
                                     <option value={user.id} key={user.id}>
-                                        {`${user.name}`}
+                                    {`${user.name}`}
                                     </option>
-                                )
+                                );
                                 })
-                            : null}
-                        </select>
+                            ) : null}
+                            </select>
                             <div className="container two-col col-gap-7">
                             <input type="date" name="date" value={form.date} 
                             onChange={handleChange} placeholder="Select a date" />
@@ -202,14 +202,14 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                                     <input
                                     type="checkbox"
                                     name="category"
-                                    value={value}
+                                    value={form.category}
                                     onChange={handleChange}
                                     checked
                                     /> :
                                     <input
                                     type="checkbox"
                                     name="category"
-                                    value={value}
+                                    value={form.category}
                                     onChange={handleChange}
                                     />
                                     }
@@ -228,15 +228,17 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                                     Array.isArray(debts) ? debts.map((debt) => 
                                     {
                                         return (
-                                            <div className="input-wrapper">
-                                            <label for="amountInput">
-                                                {debt.user_name}
-                                            </label>
+                                            <div className="input-wrapper" key=
+                                            {debt.id}>
+                                                <label>
+                                                    {debt.user_name}
+                                                </label>
                                                 <div>
-                                                    <MoneysInput id={debt.id} 
+                                                    <MoneysInput
                                                     name="debt" value=
                                                     {debt.amount} 
-                                                    onChange={handleDebtsChange}/>
+                                                    onChange=
+                                                    {handleDebtsChange}/>
                                                 </div>
                                             </div>
                                         )

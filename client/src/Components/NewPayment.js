@@ -195,7 +195,7 @@ function EditPayment({selectedTab, handleNewPayment}){
                                 {
                                     return (
                                         <div class="input-wrapper">
-                                        <label for="amountInput">
+                                        <label>
                                             {debt.user_name}
                                         </label>
                                             <div>
