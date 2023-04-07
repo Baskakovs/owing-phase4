@@ -1,7 +1,10 @@
-import MoneysInput from "./MoneysInput";
-import ErrorsDisplay from "./ErrorsDisplay";
+//Importing dependencies
 import React, {useState, useEffect} from "react"
 import {useParams, useHistory} from "react-router-dom"
+//Importing components
+import MoneysInput from "./MoneysInput";
+import ErrorsDisplay from "./ErrorsDisplay";
+import Categories from "./Categories";
 
 function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
 
@@ -78,10 +81,6 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
             [e.target.name]: e.target.value
         })
     }
-
-    //EMOJIS
-
-    const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", taxi: "🚕", drink: "🍺", energy: "⚡", cash: "💰"}
 
     //CONVERTING THE FORM
 
@@ -185,39 +184,8 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                                 </div>
                             </div>
                             <div className="container four-col">
-                                {
-                                    Object.values(EMOJIS).map((emoji) => 
-                                        {
-                                        let value;
-                                        Object.keys(EMOJIS).find((key) => {
-                                            if (EMOJIS[key] === emoji) {
-                                            value = key;
-                                        }
-                                        return null
-                                    });
-                                    return (
-                                    <label className="checkbox-with-emoji" key=
-                                    {emoji}>
-                                    {form.category === value ?
-                                    <input
-                                    type="checkbox"
-                                    name="category"
-                                    value={form.category}
-                                    onChange={handleChange}
-                                    checked
-                                    /> :
-                                    <input
-                                    type="checkbox"
-                                    name="category"
-                                    value={form.category}
-                                    onChange={handleChange}
-                                    />
-                                    }
-                                    <span className="checkmark">{emoji}</span>
-                                    </label>
-                                    );
-                                    })
-                                }
+                                <Categories handleChange={handleChange} form=
+                                {form}/>
                             </div>
                         </div>
                         <div className="container">
