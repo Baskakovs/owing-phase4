@@ -177,7 +177,8 @@ function handleUpdateTab(res){
         <Route path="/payment/:id">
           <EditPayment selectedTab={selectedTab} 
           handleUpdateTab={handleUpdateTab} 
-          handleDeletePayment={handleDeletePayment}/>
+          handleDeletePayment={handleDeletePayment}
+          />
         </Route>
         <Route path="/new_payment">
           <NewPayment selectedTab={selectedTab} handleUpdateTab=

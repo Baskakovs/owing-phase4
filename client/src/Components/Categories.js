@@ -1,3 +1,5 @@
+//Importing dependencies
+import uuid from "react-uuid"
 function Categories({handleChange, form}){
     //EMOJIS
     const EMOJIS = {plane: "✈️", food: "🌮️", medicne: "💊", entertainment: "💃", 
@@ -14,6 +16,7 @@ function Categories({handleChange, form}){
                 onChange={handleChange}
                 checked={form.category === 
                 emojiKey}
+                key={uuid()}
                 />
                 <span className="checkmark">
                     {EMOJIS[emojiKey]}

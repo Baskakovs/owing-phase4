@@ -185,7 +185,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                             onChange={handleChange} 
                             placeholder="Select a date" 
                             />
-                            <input type="time" name={"time"} value={form.time} 
+                            <input type="time" name="time" value={form.time} 
                             onChange={handleChange}
                             />
                             </div>
@@ -211,8 +211,7 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                             </div>
                             <div className="container four-col">
                                 <Categories handleChange={handleChange} form=
-                                {form}
-                                key={uuid()}/>
+                                {form}/>
                             </div>
                         </div>
                         <div className="container">
@@ -250,9 +249,10 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
                                 }
                         </div>
                     </div>
-                    <button className="btn-purple m-a mt-7">Update</button>
+                    <button className="btn-purple m-a mt-7" 
+                    key={uuid()}>Update</button>
                     <button onClick={onhandleDeletePayment} className="btn-split 
-                    mb-7">Delete</button>
+                    mb-7" key={uuid()}>Delete</button>
                 </div>
             </>)}
             </form>
