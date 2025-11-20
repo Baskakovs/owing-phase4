@@ -1,6 +1,6 @@
 //Importing dependencies
 import React, {useState, useEffect} from "react"
-import {useParams, useHistory} from "react-router-dom"
+import {useParams, useNavigate} from "react-router-dom"
 import uuid from "react-uuid";
 //Importing components
 import ErrorsDisplay from "./ErrorsDisplay";
@@ -119,13 +119,14 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         fetch(`/payments/${form.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
+            credentials: 'include',
             body: JSON.stringify(form)
         })
         .then((res)=>{
             if(res.ok){
                 res.json().then(data=>{
                     handleUpdateTab(data)
-                    history.push("/")
+                    navigate("/")
                 })
             }else{
                 res.json().then((e)=>{setErrors(e.errors)})
@@ -140,19 +141,20 @@ function EditPayment({selectedTab, handleUpdateTab, handleDeletePayment}){
         e.preventDefault()
         fetch(`/payments/${form.id}`, {
             method: "DELETE",
+            credentials: 'include'
         })
         .then((res)=>{
             if(res.ok){
                 handleDeletePayment(form.id, form.tab_id)
-                history.push("/")
+                navigate("/")
             }
         })
     }
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     function goBack() {
-        history.goBack();
+        navigate(-1);
     }
 
 

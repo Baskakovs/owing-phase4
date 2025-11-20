@@ -25,12 +25,13 @@ module ReactRailsApiProjectTemplate
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
 
-    # Use SameSite=Strict for all cookies to help protect against CSRF
+    # Use SameSite=Lax for development to allow cookies across different ports
+    # In production, consider using :strict for better security
     # https://owasp.org/www-community/SameSite
-    config.action_dispatch.cookies_same_site_protection = :strict
+    config.action_dispatch.cookies_same_site_protection = :lax
 
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 7.1
 
     # Configuration for the application, engines, and railties goes here.
     #

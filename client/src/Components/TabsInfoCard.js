@@ -1,10 +1,10 @@
 //Importing dependencies
 import React, {useState, useEffect} from "react"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 function TabsInfoCard({selectedTab}){
 
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const {id, category, description, created_at, user} = selectedTab
     const {name} = user
@@ -35,7 +35,7 @@ function TabsInfoCard({selectedTab}){
     //HANDLING CLICK
     //==============
     function handleClick(){
-        history.push(`/payment/${id}`)
+        navigate(`/payment/${id}`)
     }
 
     return(

@@ -1,6 +1,6 @@
 //Importing dependencies
 import React, {useState, useEffect, createContext} from 'react';
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 //Importing components
 import './App.css';
 import Login from './Components/Login';
@@ -21,7 +21,9 @@ function App() {
 const [currentUser, setCurrentUser] = useState("")
 
 useEffect(() => {
-  fetch('/auth')
+  fetch('/auth', {
+    credentials: 'include'
+  })
     .then(res => {
       if (res.ok) {
         res.json().then(user => setCurrentUser(user));
@@ -33,6 +35,7 @@ useEffect(() => {
 function handleLogout(){
   fetch(`/logout`,{
     method: "DELETE",
+    credentials: 'include'
   })
   .then((res)=>{
     if(res.ok){
@@ -50,7 +53,9 @@ const [selectedTab, setSelectedTab] = useState("")
 
 //Fetching the data from the backend
 useEffect(() => {
-    fetch("/tabs")
+    fetch("/tabs", {
+      credentials: 'include'
+    })
     .then( res =>{
         if(res.ok){
             res.json().then(data => setData(data))
@@ -167,30 +172,30 @@ function handleUpdateTab(res){
     <div className="align-content-center">
     <BrowserRouter>
       <Nav handleLogout={handleLogout}/>
-      <Switch>
-        <Route exact path="/">
+      <Routes>
+        <Route path="/" element={
           <TabContext.Provider value={{handleTransitionLeft, left, data, 
             handleClose, selectedTab, setSelectedTab}}>
             <Tab left={left}/>
           </TabContext.Provider>
-        </Route>
-        <Route path="/payment/:id">
+        } />
+        <Route path="/payment/:id" element={
           <EditPayment selectedTab={selectedTab} 
           handleUpdateTab={handleUpdateTab} 
           handleDeletePayment={handleDeletePayment}
           />
-        </Route>
-        <Route path="/new_payment">
+        } />
+        <Route path="/new_payment" element={
           <NewPayment selectedTab={selectedTab} handleUpdateTab=
           {handleUpdateTab} handleNewPayment={handleNewPayment}/>
-        </Route>
-        <Route path="/new_tab">
+        } />
+        <Route path="/new_tab" element={
           <NewTab handleNewTab={handleNewTab}/>
-        </Route>
-        <Route path="/login">
+        } />
+        <Route path="/login" element={
           <Login setCurrentUser={setCurrentUser}/>
-        </Route>
-      </Switch>
+        } />
+      </Routes>
       </BrowserRouter>
 
     </div>

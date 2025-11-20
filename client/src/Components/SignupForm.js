@@ -27,15 +27,19 @@ function SignupForm({setErrors}){
 
     //SUBMITTING SIGNUP TO THE BACK-END
     //=================================
-    let validity = true
     function handleSubmit(e){
         e.preventDefault()
-        validateInputs()
-        if(validity){
+        const isValid = validateInputs()
+        if(isValid){
             fetch('/users',{
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(signUpForm)
+                credentials: 'include',
+                body: JSON.stringify({
+                    email: signUpForm.email,
+                    name: signUpForm.name,
+                    password: signUpForm.password
+                })
             })
             .then(res => {
                 if(res.ok){
@@ -50,17 +54,16 @@ function SignupForm({setErrors}){
     //Validating Inputs
     function validateInputs(){
         let errors = []
-        //Validate password
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+        //Validate password - allow any special character, not just specific ones
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/;
         if(!passwordRegex.test(signUpForm.password)){
             errors.push("Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character")
-            validity = false
         }
         if(signUpForm.password !== signUpForm.confirmPassword){
             errors.push("Passwords do not match")
-            validity = false
         }
         setErrors(errors)
+        return errors.length === 0
     }
 
     return(

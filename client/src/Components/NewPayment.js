@@ -1,6 +1,6 @@
 //Importing dependencies
 import React, {useState, useEffect} from "react"
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import uuid from "react-uuid";
 //Importing components
 import ErrorsDisplay from "./ErrorsDisplay";
@@ -22,7 +22,22 @@ function EditPayment({selectedTab, handleNewPayment}){
     }, [users])
 
     const [form, setForm] = useState({user_id: String(selectedTab.users[0].id), 
-    tab_id: selectedTab.id})
+    tab_id: selectedTab.id, amount: "", amount_secondary: ""})
+    
+    // Currency conversion - using default rates (can be made dynamic later)
+    const exchangeRates = {
+        'USD_EUR': 0.92,
+        'EUR_USD': 1.09,
+        'GBP_USD': 1.27,
+        'USD_GBP': 0.79,
+        'GBP_EUR': 1.16,
+        'EUR_GBP': 0.86
+    }
+    
+    // Get currencies from tab or use defaults
+    const primaryCurrency = selectedTab.primary_currency || 'USD'
+    const secondaryCurrency = selectedTab.secondary_currency || 'EUR'
+    const currencySymbols = { 'USD': '$', 'EUR': '€', 'GBP': '£' }
 
     //HANDLING THE DEBTS
     //==================
@@ -49,17 +64,31 @@ function EditPayment({selectedTab, handleNewPayment}){
             [name]: value
         })
 
-        //Clearing the errors when the user starts typing date, time or         description
+        // Auto-convert between currencies
+        if(name === "amount" && value) {
+            const rate = exchangeRates[`${primaryCurrency}_${secondaryCurrency}`] || 1
+            const converted = (parseFloat(value) * rate).toFixed(2)
+            setForm(prev => ({...prev, amount_secondary: converted}))
+        } else if(name === "amount_secondary" && value) {
+            const rate = exchangeRates[`${secondaryCurrency}_${primaryCurrency}`] || 1
+            const converted = (parseFloat(value) * rate).toFixed(2)
+            setForm(prev => ({...prev, amount: converted}))
+        }
+
+        //Clearing the errors when the user starts typing date, time or description
         if(name === "date" || name === "time" || name === "description")
         {setErrors([])}
     }
 
     function handleSplitEqually(e){
         e.preventDefault()
-        let newDebts = debts.map((debt)=>{
-            return {...debt, amount: form.amount / users.length}
-        })
-        setDebts(newDebts)
+        const amountToSplit = parseFloat(form.amount) || 0
+        if(amountToSplit > 0) {
+            let newDebts = debts.map((debt)=>{
+                return {...debt, amount: (amountToSplit / users.length).toFixed(2)}
+            })
+            setDebts(newDebts)
+        }
     }
 
     //HANDLING THE SUBMIT
@@ -73,13 +102,14 @@ function EditPayment({selectedTab, handleNewPayment}){
             fetch(`/payments`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: 'include',
                 body: JSON.stringify(form)
             })
             .then((res)=>{
                 if(res.ok){
                     res.json().then(data=>{
                         handleNewPayment(data)
-                        history.push('/')
+                        navigate('/')
                     }
                     )
                 }else{
@@ -108,10 +138,10 @@ function EditPayment({selectedTab, handleNewPayment}){
         }
     }
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     function goBack() {
-        history.goBack();
+        navigate(-1);
     }
 
     return(
@@ -142,23 +172,25 @@ function EditPayment({selectedTab, handleNewPayment}){
                         onChange={handleChange}/>
                         </div>
                         <div className="container two-col col-gap-7">
-                        <div className="container two-col col-gap-7">
                             <div>
+                                <label>{primaryCurrency} Amount</label>
                                 <div className="currency-wrap">
-                                    <span className="currency-code">$</span>
+                                    <span className="currency-code">{currencySymbols[primaryCurrency] || '$'}</span>
                                     <input className="text-currency" name={"amount"} 
-                                    value={form.amount} onChange={handleChange} />
+                                    value={form.amount} onChange={handleChange} 
+                                    placeholder="Enter amount" />
                                 </div>
                             </div>
                             <div>
+                                <label>{secondaryCurrency} Amount</label>
                                 <div className="currency-wrap">
-                                    <span className="currency-code">$</span>
-                                    <input className="text-currency" name={"amount"} 
-                                    value={form.amount} onChange={handleChange} />
+                                    <span className="currency-code">{currencySymbols[secondaryCurrency] || '€'}</span>
+                                    <input className="text-currency" name={"amount_secondary"} 
+                                    value={form.amount_secondary} onChange={handleChange} 
+                                    placeholder="Auto-converted" />
                                 </div>
                             </div>
-                            </div>
-                            </div>
+                        </div>
                         <div className="container four-col">
                             <Categories handleChange={handleChange} key={ uuid()} form={form}/>
                         </div>

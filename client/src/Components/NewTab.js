@@ -1,13 +1,13 @@
 //Importing dependencies
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 //Importing components
 import ErrorsDisplay from "./ErrorsDisplay"
 
 function NewTab({handleNewTab}){
-    const history = useHistory()
+    const navigate = useNavigate()
     function goBack(){
-        history.goBack()
+        navigate(-1)
     }
 
     //HANDLING FORM INPUTS
@@ -38,13 +38,14 @@ function NewTab({handleNewTab}){
         fetch(`/tabs`,{
             method: "POST",
             headers: {"Content-Type":"application/json"},
+            credentials: 'include',
             body: JSON.stringify(form)
         })
         .then((res)=>{
             if(res.ok){
                 res.json().then((data)=>{
                     handleNewTab(data)
-                    history.push(`/`)
+                    navigate(`/`)
                 })
             }else{
                 res.json().then((e)=>setErrors(e.errors))

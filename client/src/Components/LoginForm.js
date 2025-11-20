@@ -29,6 +29,7 @@ function LoginForm({setErrors}){
         fetch('/login',{
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: 'include',
             body: JSON.stringify(loginForm)
         })
         .then(res => {
