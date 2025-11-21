@@ -5,6 +5,15 @@ task start: :environment do
   puts "React Client: http://localhost:4000"
   puts ""
   
+  # Ensure npm dependencies are installed
+  puts "Installing npm dependencies..."
+  unless system('cd client && npm install')
+    puts "Error: Failed to install npm dependencies"
+    exit 1
+  end
+  puts "npm dependencies installed successfully"
+  puts ""
+  
   # Unset NODE_OPTIONS to avoid conflicts with newer Node.js versions
   ENV.delete('NODE_OPTIONS')
   
